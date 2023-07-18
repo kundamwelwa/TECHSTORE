@@ -44,8 +44,8 @@ export default class Rent extends Component {
     componentWidth: this.width * 0.7,
     SOS: "",
     BR: 0,
-    city: null,
-    street: null,
+    city: "",
+    street: "",
     errorMessage: null,
   };
 
@@ -229,19 +229,21 @@ export default class Rent extends Component {
                 </View>
               </View>
 
-              <Chip
-                icon="information"
-                onPress={() => console.log("Pressed")}
-                mode="flat"
-                color={"#EE3855"}
-                style={{
-                  width: "85%",
-                  flexDirection: "row",
-                  marginStart: 15,
-                }}
-              >
-                Example Chip
-              </Chip>
+              {this.state.city == "" && this.state.street == "" ? null : (
+                <Chip
+                  icon="information"
+                  onPress={() => console.log("Pressed")}
+                  mode="flat"
+                  color={"#EE3855"}
+                  style={{
+                    width: "85%",
+                    flexDirection: "row",
+                    marginStart: 15,
+                  }}
+                >
+                  {this.state.city}, {this.state.street}
+                </Chip>
+              )}
 
               <Modal visible={modalVisible} animationType="slide">
                 <TouchableOpacity
