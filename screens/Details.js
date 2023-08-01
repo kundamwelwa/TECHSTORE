@@ -77,457 +77,434 @@ const Details = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.modalStyle}>
-      <Modal visible={ViewModal} animationType="slide">
-        <ImageBackground
-          source={require("../assets/images/bh5.jpeg")}
-          imageStyle={{
-            resizeMode: "cover",
-            height: "100%",
-            // position: "relative",
+      <ImageBackground
+        source={require("../assets/images/bh5.jpeg")}
+        imageStyle={{
+          resizeMode: "cover",
+          height: "100%",
+          // position: "relative",
+        }}
+        style={{ backgroundColor: "#dcdcdd", width: "100%", height: "50%" }}
+      ></ImageBackground>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        horizontal={false}
+        style={{
+          backgroundColor: "#fff",
+          height: "100%",
+          marginTop: -100,
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+          shadowColor: "black",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 1,
+          shadowRadius: 7,
+          padding: 20,
+          paddingTop: 30,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "800",
+            marginBottom: 10,
+            ...(isTablet() && {
+              fontSize: 28,
+            }),
           }}
-          style={{ backgroundColor: "#dcdcdd", width: "100%", height: "50%" }}
         >
-          <TouchableOpacity
-            style={{
-              padding: 7,
-              width: 50,
-              backgroundColor: "#cdcdcd",
-              borderRadius: 5,
-              marginTop: Platform.OS == "ios" ? 45 : 20,
-              marginStart: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              // position: "absolute",
-            }}
-            onPress={() => gobackToResults()}
-          >
-            <Ionicons
-              name="md-chevron-back"
-              size={isTablet() ? 35 : 24}
-              color="white"
-            />
-          </TouchableOpacity>
-        </ImageBackground>
+          See all rooms
+        </Text>
 
         <ScrollView
-          showsVerticalScrollIndicator={false}
-          horizontal={false}
+          horizontal
+          style={{ marginVertical: 15 }}
+          showsHorizontalScrollIndicator={false}
+        >
+          <ImageBackground
+            source={require("../assets/images/bh5.jpeg")}
+            imageStyle={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+            }}
+            style={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+              marginEnd: 20,
+            }}
+          ></ImageBackground>
+          <ImageBackground
+            source={require("../assets/images/bh3.png")}
+            imageStyle={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+            }}
+            style={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+              marginEnd: 20,
+            }}
+          ></ImageBackground>
+          <ImageBackground
+            source={require("../assets/images/bh7.jpg")}
+            imageStyle={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+            }}
+            style={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+              marginEnd: 20,
+            }}
+          ></ImageBackground>
+          <ImageBackground
+            source={require("../assets/images/bh6.jpg")}
+            imageStyle={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+            }}
+            style={{
+              borderRadius: 10,
+              backgroundColor: "#dcdcdc",
+              width: 80,
+              height: 80,
+              marginEnd: 20,
+            }}
+          ></ImageBackground>
+        </ScrollView>
+        <Text
           style={{
-            backgroundColor: "#fff",
-            height: "70%",
-            marginTop: -100,
-            borderTopLeftRadius: 25,
-            borderTopRightRadius: 25,
-            shadowColor: "black",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 1,
-            shadowRadius: 7,
-            padding: 20,
-            paddingTop: 30,
+            fontSize: 22,
+            fontWeight: "800",
+            marginTop: 20,
+            ...(isTablet() && {
+              fontSize: 28,
+            }),
           }}
         >
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "800",
-              marginBottom: 10,
-              ...(isTablet() && {
-                fontSize: 28,
-              }),
-            }}
-          >
-            See all rooms
-          </Text>
+          List Details
+        </Text>
 
-          <ScrollView
-            horizontal
-            style={{ marginVertical: 15 }}
-            showsHorizontalScrollIndicator={false}
-          >
-            <ImageBackground
-              source={require("../assets/images/bh5.jpeg")}
-              imageStyle={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-              }}
-              style={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-                marginEnd: 20,
-              }}
-            ></ImageBackground>
-            <ImageBackground
-              source={require("../assets/images/bh3.png")}
-              imageStyle={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-              }}
-              style={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-                marginEnd: 20,
-              }}
-            ></ImageBackground>
-            <ImageBackground
-              source={require("../assets/images/bh7.jpg")}
-              imageStyle={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-              }}
-              style={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-                marginEnd: 20,
-              }}
-            ></ImageBackground>
-            <ImageBackground
-              source={require("../assets/images/bh6.jpg")}
-              imageStyle={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-              }}
-              style={{
-                borderRadius: 10,
-                backgroundColor: "#dcdcdc",
-                width: 80,
-                height: 80,
-                marginEnd: 20,
-              }}
-            ></ImageBackground>
-          </ScrollView>
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "800",
-              marginTop: 20,
-              ...(isTablet() && {
-                fontSize: 28,
-              }),
-            }}
-          >
-            List Details
-          </Text>
-
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginVertical: 15,
+            justifyContent: "space-between",
+            marginVertical: 20,
+            ...(isTablet() && {
+              marginBottom: 25,
+            }),
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              marginVertical: 15,
-              justifyContent: "space-between",
-              marginVertical: 20,
-              ...(isTablet() && {
-                marginBottom: 25,
-              }),
             }}
           >
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  padding: 10,
-                  borderRadius: 60,
-                  backgroundColor: "#ee3855",
-                  width: 40,
-                  height: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginEnd: 10,
-                  ...(isTablet() && {
-                    width: 60,
-                    height: 60,
-                  }),
-                }}
-              >
-                <MaterialIcons
-                  name="house"
-                  size={isTablet() ? 35 : 20}
-                  color="white"
-                />
-              </View>
-
-              <View
-                style={{
-                  marginStart: 5,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000",
-                    fontWeight: "600",
-                    ...(isTablet() && {
-                      fontSize: 22,
-                    }),
-                  }}
-                >
-                  Address
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    marginTop: 2,
-                    color: "#8e8e8e",
-                    ...(isTablet() && {
-                      fontSize: 20,
-                    }),
-                  }}
-                >
-                  24 Kalewa Road
-                </Text>
-              </View>
-            </View>
-            <TouchableOpacity
-              style={{
-                marginEnd: 10,
-                backgroundColor: "#F5F5F5",
                 padding: 10,
                 borderRadius: 60,
-                elevation: 5,
+                backgroundColor: "#ee3855",
                 width: 40,
                 height: 40,
                 alignItems: "center",
                 justifyContent: "center",
+                marginEnd: 10,
                 ...(isTablet() && {
-                  width: 50,
-                  height: 50,
+                  width: 60,
+                  height: 60,
                 }),
               }}
-              onPress={() => console.log("clicked")}
             >
-              <FontAwesome
-                name="phone"
-                size={isTablet() ? 35 : 24}
-                color="#ee3855"
+              <MaterialIcons
+                name="house"
+                size={isTablet() ? 35 : 20}
+                color="white"
               />
-            </TouchableOpacity>
-          </View>
-          <ViewMoreText
-            numberOfLines={3}
-            renderViewMore={renderViewMore}
-            renderViewLess={renderViewLess}
-          >
-            <Text
-              style={{
-                marginHorizontal: 10,
-                color: "#848484",
-                marginTop: 15,
-                lineHeight: 18,
-                ...(isTablet() && {
-                  fontSize: 18,
-                  lineHeight: 24,
-                }),
-              }}
-            >
-              Velit Lorem aute magna enim anim incididunt. Quis ad anim aute
-              exercitation et minim fugiat minim consectetur consequat qui
-              exercitation. Et minim occaecat ullamco veniam irure et
-              adipisicing ex sit est ad pariatur. Magna elit ullamco ullamco
-              aute enim velit quis. Consequat esse culpa in non adipisicing
-              ullamco adipisicing ea. Veniam incididunt esse mollit veniam
-              aliqua tempor reprehenderit.
-            </Text>
-          </ViewMoreText>
-
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "800",
-              marginVertical: 15,
-              ...(isTablet() && {
-                fontSize: 28,
-              }),
-            }}
-          >
-            Specification
-          </Text>
-
-          <View
-            style={{
-              justifyContent: "space-between",
-              marginEnd: 10,
-              paddingHorizontal: 10,
-              flexDirection: "row",
-              paddingBottom: 30,
-              ...(isTablet() && {
-                paddingEnd: 70,
-              }),
-            }}
-          >
-            <View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <MaterialCommunityIcons
-                  name="bed"
-                  size={isTablet() ? 35 : 25}
-                  color="#bdbdbd"
-                />
-                <Text
-                  style={{
-                    color: "#bdbdbd",
-                    fontWeight: "800",
-                    fontSize: 24,
-                    marginStart: 10,
-                    ...(isTablet() && {
-                      fontSize: 30,
-                    }),
-                  }}
-                >
-                  {2}
-                </Text>
-              </View>
-
-              <Text
-                style={{
-                  color: "#bdbdbd",
-                  ...(isTablet() && {
-                    fontSize: 18,
-                  }),
-                }}
-              >
-                Bed Spaces
-              </Text>
             </View>
-            <View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <MaterialCommunityIcons
-                  name="countertop"
-                  size={isTablet() ? 35 : 25}
-                  color="#bdbdbd"
-                />
-                <Text
-                  style={{
-                    color: "#bdbdbd",
-                    fontWeight: "800",
-                    fontSize: 24,
-                    marginStart: 10,
-                    ...(isTablet() && {
-                      fontSize: 30,
-                    }),
-                  }}
-                >
-                  {1}
-                </Text>
-              </View>
 
-              <Text
-                style={{
-                  color: "#bdbdbd",
-                  ...(isTablet() && {
-                    fontSize: 18,
-                  }),
-                }}
-              >
-                Tables
-              </Text>
-            </View>
-            <View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <MaterialCommunityIcons
-                  name="locker-multiple"
-                  size={isTablet() ? 35 : 25}
-                  color="#bdbdbd"
-                />
-                <Text
-                  style={{
-                    color: "#bdbdbd",
-                    fontWeight: "800",
-                    fontSize: 24,
-                    marginStart: 10,
-                    ...(isTablet() && {
-                      fontSize: 30,
-                    }),
-                  }}
-                >
-                  2
-                </Text>
-              </View>
-
-              <Text
-                style={{
-                  color: "#bdbdbd",
-                  ...(isTablet() && {
-                    fontSize: 18,
-                  }),
-                }}
-              >
-                lockers
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginEnd: 5,
-              paddingHorizontal: 5,
-              flexDirection: "row",
-              paddingBottom: 80,
-            }}
-          >
             <View
               style={{
-                flexDirection: "row",
                 marginStart: 5,
-
-                marginVertical: 5,
-                alignItems: "center",
               }}
-            >
-              <Text style={{ fontSize: 30, fontWeight: "bold", color: "#000" }}>
-                K {650}
-              </Text>
-              <Text style={{ color: "#000", fontSize: 16 }}> / month</Text>
-            </View>
-
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#EE3855",
-                borderRadius: 70,
-                elevation: 5,
-                width: 160,
-                height: 60,
-                alignItems: "center",
-                justifyContent: "center",
-                ...(isTablet() && {
-                  width: 200,
-                  height: 80,
-                }),
-              }}
-              onPress={() => console.log("clicked")}
             >
               <Text
                 style={{
                   fontSize: 18,
-                  fontWeight: "500",
-                  color: "#fff",
+                  color: "#000",
+                  fontWeight: "600",
                   ...(isTablet() && {
                     fontSize: 22,
                   }),
                 }}
               >
-                Book Now
+                Address
               </Text>
-            </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 14,
+                  marginTop: 2,
+                  color: "#8e8e8e",
+                  ...(isTablet() && {
+                    fontSize: 20,
+                  }),
+                }}
+              >
+                24 Kalewa Road
+              </Text>
+            </View>
           </View>
-        </ScrollView>
-      </Modal>
+          <TouchableOpacity
+            style={{
+              marginEnd: 10,
+              backgroundColor: "#F5F5F5",
+              padding: 10,
+              borderRadius: 60,
+              elevation: 5,
+              width: 40,
+              height: 40,
+              alignItems: "center",
+              justifyContent: "center",
+              ...(isTablet() && {
+                width: 50,
+                height: 50,
+              }),
+            }}
+            onPress={() => console.log("clicked")}
+          >
+            <FontAwesome
+              name="phone"
+              size={isTablet() ? 35 : 24}
+              color="#ee3855"
+            />
+          </TouchableOpacity>
+        </View>
+        <ViewMoreText
+          numberOfLines={3}
+          renderViewMore={renderViewMore}
+          renderViewLess={renderViewLess}
+        >
+          <Text
+            style={{
+              marginHorizontal: 10,
+              color: "#848484",
+              marginTop: 15,
+              lineHeight: 18,
+              ...(isTablet() && {
+                fontSize: 18,
+                lineHeight: 24,
+              }),
+            }}
+          >
+            Velit Lorem aute magna enim anim incididunt. Quis ad anim aute
+            exercitation et minim fugiat minim consectetur consequat qui
+            exercitation. Et minim occaecat ullamco veniam irure et adipisicing
+            ex sit est ad pariatur. Magna elit ullamco ullamco aute enim velit
+            quis. Consequat esse culpa in non adipisicing ullamco adipisicing
+            ea. Veniam incididunt esse mollit veniam aliqua tempor
+            reprehenderit.
+          </Text>
+        </ViewMoreText>
+
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "800",
+            marginVertical: 15,
+            ...(isTablet() && {
+              fontSize: 28,
+            }),
+          }}
+        >
+          Specification
+        </Text>
+
+        <View
+          style={{
+            justifyContent: "space-between",
+            marginEnd: 10,
+            paddingHorizontal: 10,
+            flexDirection: "row",
+            paddingBottom: 30,
+            ...(isTablet() && {
+              paddingEnd: 70,
+            }),
+          }}
+        >
+          <View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialCommunityIcons
+                name="bed"
+                size={isTablet() ? 35 : 25}
+                color="#bdbdbd"
+              />
+              <Text
+                style={{
+                  color: "#bdbdbd",
+                  fontWeight: "800",
+                  fontSize: 24,
+                  marginStart: 10,
+                  ...(isTablet() && {
+                    fontSize: 30,
+                  }),
+                }}
+              >
+                {2}
+              </Text>
+            </View>
+
+            <Text
+              style={{
+                color: "#bdbdbd",
+                ...(isTablet() && {
+                  fontSize: 18,
+                }),
+              }}
+            >
+              Bed Spaces
+            </Text>
+          </View>
+          <View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialCommunityIcons
+                name="countertop"
+                size={isTablet() ? 35 : 25}
+                color="#bdbdbd"
+              />
+              <Text
+                style={{
+                  color: "#bdbdbd",
+                  fontWeight: "800",
+                  fontSize: 24,
+                  marginStart: 10,
+                  ...(isTablet() && {
+                    fontSize: 30,
+                  }),
+                }}
+              >
+                {1}
+              </Text>
+            </View>
+
+            <Text
+              style={{
+                color: "#bdbdbd",
+                ...(isTablet() && {
+                  fontSize: 18,
+                }),
+              }}
+            >
+              Tables
+            </Text>
+          </View>
+          <View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialCommunityIcons
+                name="locker-multiple"
+                size={isTablet() ? 35 : 25}
+                color="#bdbdbd"
+              />
+              <Text
+                style={{
+                  color: "#bdbdbd",
+                  fontWeight: "800",
+                  fontSize: 24,
+                  marginStart: 10,
+                  ...(isTablet() && {
+                    fontSize: 30,
+                  }),
+                }}
+              >
+                2
+              </Text>
+            </View>
+
+            <Text
+              style={{
+                color: "#bdbdbd",
+                ...(isTablet() && {
+                  fontSize: 18,
+                }),
+              }}
+            >
+              lockers
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginEnd: 5,
+            paddingHorizontal: 5,
+            flexDirection: "row",
+            paddingBottom: 80,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              marginStart: 5,
+
+              marginVertical: 5,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 30, fontWeight: "bold", color: "#000" }}>
+              K {650}
+            </Text>
+            <Text style={{ color: "#000", fontSize: 16 }}> / month</Text>
+          </View>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#EE3855",
+              borderRadius: 70,
+              elevation: 5,
+              width: 160,
+              height: 60,
+              alignItems: "center",
+              justifyContent: "center",
+              ...(isTablet() && {
+                width: 200,
+                height: 80,
+              }),
+            }}
+            onPress={() => console.log("clicked")}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "500",
+                color: "#fff",
+                ...(isTablet() && {
+                  fontSize: 22,
+                }),
+              }}
+            >
+              Book Now
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -538,7 +515,7 @@ const styles = StyleSheet.create({
   modalStyle: {
     flex: 1,
     backgroundColor: "white",
-    // paddingTop: Platform.OS == "android" ? 20 : 45,
+    paddingTop: Platform.OS == "android" ? 0 : 45,
     padddingHorizontal: 10,
   },
 });

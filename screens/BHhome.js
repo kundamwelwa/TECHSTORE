@@ -8,7 +8,7 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react-native";
 
 import { SelectList } from "react-native-dropdown-select-list";
@@ -19,13 +19,20 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
+import * as Location from "expo-location";
+import { GOOGLE_API_KEY } from "../ENVIRONMENTS";
+import axios from "axios";
+import NearbyColleges from "../components/NearbyColleges";
 
 const BHhoom = ({ navigation }) => {
-  const [institution, setSelected] = React.useState("");
+  const [selected, setSelected] = React.useState(null);
   const [bedspaces, setBedspaces] = React.useState(1);
   const [viewLoading, setViewLoading] = React.useState(false);
   const [gender, setGender] = React.useState(0);
   const [bhgender, setbhGender] = React.useState("Male");
+
+  const [location, setLocation] = useState(null);
+  const [collegesData, setCollegesData] = useState([]);
   const bh_gender = [
     { label: "Male", value: 0 },
     { label: "Female", value: 1 },
@@ -43,7 +50,6 @@ const BHhoom = ({ navigation }) => {
     { key: "9", value: "ICU" },
     { key: "10", value: "University Of Zambia" },
     { key: "11", value: "Mulungushi University" },
-
   ];
   const beds = [
     { key: "1", value: "1" },
@@ -71,11 +77,60 @@ const BHhoom = ({ navigation }) => {
       setViewLoading(true);
       // console.log(institution, " ", bedspaces, " ", bhgender);
       setTimeout(() => {
-        navigation.navigate("Results", { institution, bedspaces, bhgender });
+        navigation.navigate("Map");
+        // navigation.navigate("Results", { institution, bedspaces, bhgender });
         setViewLoading(false);
       }, 3000); // wait for 3 seconds (300 milliseconds) before navigating
     }
   };
+
+  // Function to get device's current location and fetch colleges
+  const fetchCollegesNearby = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied.");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const apiKey = GOOGLE_API_KEY;
+      const radius = 50000; // Search within a 5 km radius (you can adjust this as needed)
+      const country = "Zambia";
+      const types = "university"; // You can use other types like 'college', 'school', etc.
+
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&radius=${radius}&type=${types}&key=${apiKey}`
+      );
+      // Extracting relevant data (ID and name) from the API response and storing in an array
+
+      const colleges = response.data.results.map((college) => ({
+        key: college.place_id,
+        value: college.name,
+        latitude: college.geometry.location.lat,
+        longitude: college.geometry.location.lng,
+      }));
+      // console.log(colleges);
+      setCollegesData(colleges);
+    } catch (error) {
+      console.log("Error fetching colleges: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCollegesNearby();
+  }, []);
+
+  const handleSelect = (item) => {
+    // Extract latitude and longitude from the selected item
+    // const { latitude, longitude, label } = item;
+    // console.log(`Selected Institution: ${label}`);
+    // console.log(`Latitude: ${latitude}`);
+    // console.log(`Longitude: ${longitude}`);
+
+    console.log(item);
+  };
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -151,9 +206,10 @@ const BHhoom = ({ navigation }) => {
           >
             <SelectList
               setSelected={(val) => setSelected(val)}
-              data={institutions}
-              save="value"
+              data={collegesData}
               totalHeight={20}
+              save="value"
+              onSelect={(item) => console.log("Selected:", selected)}
               style={{
                 ...(isTablet() && { fontSize: 16, fontWeight: "700" }),
               }}
@@ -280,7 +336,7 @@ const BHhoom = ({ navigation }) => {
               alignItems: "center",
               justifyContent: "center",
               marginTop: 20,
-              marginBottom: 10,
+              marginBottom: 25,
               ...(isTablet() && {
                 height: 60,
                 marginStart: 0,
@@ -313,30 +369,24 @@ const BHhoom = ({ navigation }) => {
         >
           {Platform.OS === "ios" ? (
             <Lottie
-              source={require("../assets/animations/loading3.json")}
+              source={require("../assets/animations/bar.json")}
               autoPlay
               loop
               style={{
                 position: "relative",
-                width: "30%",
-                justifyContent: "space-evenly",
-                alignContent: "center",
-                marginBottom: -15,
-                marginTop: -10,
+                width: 2000,
+                height: 3,
               }}
             />
           ) : (
             <Lottie
-              source={require("../assets/animations/loading3.json")}
+              source={require("../assets/animations/bar.json")}
               autoPlay
               loop
               style={{
                 position: "relative",
-                width: "30%",
-                justifyContent: "space-evenly",
-                alignContent: "center",
-                marginBottom: -17,
-                marginTop: -10,
+                width: 2000,
+                height: 3,
               }}
             />
           )}
@@ -346,38 +396,37 @@ const BHhoom = ({ navigation }) => {
               fontSize: 14,
               fontWeight: "400",
               marginBottom: 10,
+              marginTop: 5,
               ...(isTablet() && { fontSize: 30, fontWeight: "700" }),
             }}
           >
-            Locating...
+            Please wait
           </Text>
         </View>
       ) : null}
 
       <Text
         style={{
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: "bold",
           marginTop: 10,
           marginStart: 10,
-          marginVertical: 10,
+          marginTop: 10,
+          marginBottom: 5,
           ...(isTablet() && { fontSize: 22, fontWeight: "700" }),
         }}
       >
         Near you
       </Text>
 
-      <Lottie
-        source={require("../assets/animations/bar.json")}
-        autoPlay
-        loop
+      <View
         style={{
-          position: "relative",
-          width: 2000,
-          height: 3,
-          marginStart: 4,
+          marginStart: 10,
+          height: 1,
+          width: 45,
+          backgroundColor: "#dedede",
         }}
-      />
+      ></View>
 
       <ScrollView
         showsHorizontalScrollIndicator={false}

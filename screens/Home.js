@@ -47,7 +47,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <NavigationContainer style={styles.container}>
+      <NavigationContainer independent={true} style={styles.container}>
         <SafeAreaView
           style={{
             fontWeight: "bold",
@@ -114,7 +114,7 @@ export default class Home extends Component {
             tabBarIndicatorStyle: { backgroundColor: "#EE3855" },
           }}
         >
-          <Tab.Screen name="Rent" component={Rent} />
+          {/* <Tab.Screen name="Rent" component={Rent} /> */}
           <Tab.Screen name="boarding houses" component={Room} />
           {/* <Tab.Screen name="Buy" component={Buy} /> */}
           {/* <Tab.Screen name="Plots" component={Plots} /> */}

@@ -24,9 +24,13 @@ import { Ionicons } from "@expo/vector-icons";
 import Map from "./Map";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import * as Location from "expo-location";
 import { Chip } from "react-native-paper";
+import * as Location from "expo-location";
+import { GOOGLE_API_KEY } from "../ENVIRONMENTS";
+import axios from "axios";
 // Create a stack navigator
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import Search from "../components/Search";
 const Stack = createStackNavigator();
 
 export default class Rent extends Component {
@@ -136,7 +140,9 @@ export default class Rent extends Component {
 
     return (
       <>
+    
         <ScrollView
+          nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}
           bounces={true}
           style={{
@@ -229,19 +235,25 @@ export default class Rent extends Component {
                 </View>
               </View>
 
-              {this.state.city == "" && this.state.street == "" ? null : (
+              {this.state.city == "" || this.isTablet() ? null : (
                 <Chip
-                  icon="information"
+                  icon="check"
                   onPress={() => console.log("Pressed")}
                   mode="flat"
-                  color={"#EE3855"}
                   style={{
-                    width: "85%",
+                    width: Dimensions.get("window").width - 40,
+                    height: 44,
+                    alignItems: "center",
                     flexDirection: "row",
-                    marginStart: 15,
+                    marginVertical: 5,
+                    marginStart: 20,
+                    paddingEnd: 20,
+                    marginHorizontal: "20%",
                   }}
+                  disabled
                 >
-                  {this.state.city}, {this.state.street}
+                  <Text>Your current city, </Text>
+                  {this.state.city}
                 </Chip>
               )}
 

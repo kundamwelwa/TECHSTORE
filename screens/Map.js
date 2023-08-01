@@ -10,20 +10,81 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { EvilIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  EvilIcons,
+  MaterialCommunityIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 import * as Location from "expo-location";
 import AnimatedLottieView from "lottie-react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import BHCard from "../components/BHCard";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
-
-export default function Map() {
+export default function Map({ navigation }) {
   const [location, setLocation] = useState(null);
   const [city, setCity] = React.useState("");
   const [street, setStreet] = useState(""); // State to store the street name
 
-  const bottomSheetRef = useRef();
+  const [mapReady, setMapReady] = useState(false);
+
+  const fetchedAeromechanicsShops = [
+    // Replace with your actual fetched data
+    {
+      ShopID: 1,
+      ShopName: "BH 1",
+      Latitude: 28.646451,
+      Longitude: -12.947038,
+    },
+    {
+      ShopID: 2,
+      ShopName: "BH 2",
+      Latitude: -12.94757,
+      Longitude: 28.644077,
+    },
+    {
+      ShopID: 3,
+      ShopName: "BH 3",
+      Latitude: -12.947038,
+      Longitude: 28.646451,
+    },
+    {
+      ShopID: 4,
+      ShopName: "BH 4",
+      Latitude: -12.948248,
+      Longitude: 28.644152,
+    },
+
+    {
+      ShopID: 5,
+      ShopName: "BH 5",
+      Latitude: -12.946442,
+      Longitude: 28.639933,
+    },
+    {
+      ShopID: 6,
+      ShopName: "BH 6",
+      Latitude: -12.946528,
+      Longitude: 28.639947,
+    },
+    {
+      ShopID: 7,
+      ShopName: "BH 7",
+      Latitude: -12.947089,
+      Longitude: 28.639814,
+    },
+    {
+      ShopID: 8,
+      ShopName: "BH 8",
+      Latitude: -12.949464,
+      Longitude: 28.642954,
+    },
+
+    // Add more shops as needed
+  ];
+  const handleMapReady = () => {
+    setMapReady(true);
+  };
 
   useEffect(() => {
     // Request permission to access the device's location
@@ -60,7 +121,14 @@ export default function Map() {
 
   if (!location) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#fff",
+        }}
+      >
         {/* <AnimatedLottieView
           source={require("../assets/animations/loadingmap1.json")}
           autoPlay
@@ -75,7 +143,7 @@ export default function Map() {
           }}
         /> */}
         <ActivityIndicator animating={true} color={"#EE3855"} size={"large"} />
-        <Text style={{ marginTop: 15 }}>Finding your location</Text>
+        <Text style={{ marginTop: 15 }}>Locating Boarding houses</Text>
       </View>
     );
   }
@@ -88,7 +156,7 @@ export default function Map() {
     <SafeAreaView style={styles.container}>
       <MapView
         provider="google"
-        style={{ flex: 1 }}
+        style={styles.map}
         initialRegion={{
           latitude: location.latitude,
           longitude: location.longitude,
@@ -101,87 +169,33 @@ export default function Map() {
             latitude: location.latitude,
             longitude: location.longitude,
           }}
-          radius={3000}
+          radius={1000}
           fillColor="rgba(0, 255, 0, 0.1)" // Adjust the fill color and opacity as needed
           strokeColor="rgba(0, 0, 0, 1)" // Adjust the stroke color and opacity as needed
           strokeWidth={1}
         />
+
+        {fetchedAeromechanicsShops.map((shop) => (
+          <Marker
+            key={shop.ShopID}
+            coordinate={{
+              latitude: shop.Latitude,
+              longitude: shop.Longitude,
+            }}
+            title={shop.ShopName}
+            // Add more details to the callout if needed
+            // description={...}
+            image={require("../assets/icons/home2.png")}
+            style={styles.marker}
+          />
+        ))}
       </MapView>
-      <View
-        style={{
-          marginVertical: 10,
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "space-evenly",
-          position: "absolute",
-          top: 16,
-          ...(isTablet() && {
-            marginStart: 10,
-            justifyContent: "space-evenly",
-          }),
-        }}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
       >
-        <View style={styles.breadcramp}>
-          <EvilIcons name="location" size={20} color="#fff" />
-          <Text style={styles.crampText}>
-            {city}, {street}
-          </Text>
-        </View>
-        <View style={styles.breadcramp}>
-          <MaterialCommunityIcons
-            name="sign-real-estate"
-            size={20}
-            color="#fff"
-          />
-          <Text style={styles.crampText}>{22} houses for rent near you</Text>
-        </View>
-      </View>
-      {/* Floating centered bottom button */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
-          <Text style={styles.buttonText}>View All properties</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* RawBottomSheet */}
-      <RBSheet
-        ref={bottomSheetRef}
-        height={bottomSheetHeight} // Set the height of the bottom sheet
-        closeOnDragDown // Allow closing the bottom sheet by dragging it down
-      >
-        {/* Content inside the bottom sheet */}
-
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          style={styles.bottomSheetContent}
-        >
-          <BHCard
-            price={1000}
-            rating={4}
-            address={"45 kalewa"}
-            distance={120}
-          />
-          <BHCard
-            price={750}
-            rating={5}
-            address={"22 Arthur davison"}
-            distance={100}
-          />
-          <BHCard
-            price={1000}
-            rating={4}
-            address={"20 Mwami road"}
-            distance={45}
-          />
-          <BHCard
-            price={1200}
-            rating={4}
-            address={"22 Mwatiyanvwa"}
-            distance={45}
-          />
-        </ScrollView>
-      </RBSheet>
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -196,6 +210,10 @@ const isTablet = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  marker: {
+    width: 2, // Adjust the width as per your preference
+    height: 1, // Adjust the height as per your preference
   },
   map: {
     width: "100%",
@@ -243,5 +261,17 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+  },
+  map: {
+    flex: 1,
+  },
+  backButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 20,
+    elevation: 5,
   },
 });

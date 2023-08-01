@@ -7,8 +7,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useRoute } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
@@ -28,6 +29,11 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
+import RBSheet from "react-native-raw-bottom-sheet";
+
+const screenHeight = Dimensions.get("window").height;
+const statusBarHeight = StatusBar.currentHeight || 0;
+const contentHeight = screenHeight - statusBarHeight;
 
 const BHResults = ({ navigation }) => {
   const [reminder, setReminder] = React.useState(false);
@@ -35,6 +41,7 @@ const BHResults = ({ navigation }) => {
   const route = useRoute();
   const { institution, bedspaces, bhgender } = route.params;
   const [gender, setGender] = React.useState(0);
+  const refRBSheet = useRef();
 
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
@@ -140,7 +147,7 @@ const BHResults = ({ navigation }) => {
         style={{ backgroundColor: "#fff", flexGrow: 1 }}
         horizontal
       >
-        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
           <BHCard
             price={1000}
             rating={4}
@@ -148,7 +155,7 @@ const BHResults = ({ navigation }) => {
             distance={120}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
           <BHCard
             price={1000}
             rating={4}
@@ -156,7 +163,7 @@ const BHResults = ({ navigation }) => {
             distance={120}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
           <BHCard
             price={1000}
             rating={4}
@@ -164,7 +171,7 @@ const BHResults = ({ navigation }) => {
             distance={120}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
           <BHCard
             price={1000}
             rating={4}
@@ -177,6 +184,21 @@ const BHResults = ({ navigation }) => {
       <Modal visible={viewDetails} animationType="slide">
         <Details SendFlaseData={receiveFalseData} />
       </Modal>
+
+      {/* <RBSheet
+        ref={refRBSheet}
+        height={contentHeight}
+        openDuration={250}
+        closeOnDragDown={true}
+        customStyles={{
+          container: {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          },
+        }}
+      >
+        <Details />
+      </RBSheet> */}
 
       <View style={{ flexGrow: 1 }}>
         <View

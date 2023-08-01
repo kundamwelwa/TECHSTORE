@@ -2,29 +2,45 @@
   "expo": {
     "name": "peza bond",
     "slug": "peza-bond",
+    "description": "Number one boarding house finder for students",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons/app_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/logo.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
       "width": 30,
       "height": 30
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jayzimba40.pezabond"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jayzimba40.pezabond"
     },
     "web": {
       "favicon": "./assets/images/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adb23d77-8867-4ce1-893e-d071492e8a0a"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/adb23d77-8867-4ce1-893e-d071492e8a0a"
     }
   }
 }

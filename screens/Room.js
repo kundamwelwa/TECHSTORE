@@ -18,6 +18,7 @@ import BHResults from "./BHResults";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./Details";
+import Map from './Map';
 
 // Create a stack navigator
 const Stack = createStackNavigator();
@@ -38,6 +39,11 @@ const Room = () => {
       <Stack.Screen
         name="Details"
         component={Details}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Map"
+        component={Map}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
