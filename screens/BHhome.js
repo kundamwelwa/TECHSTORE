@@ -11,7 +11,8 @@ import {
 import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react-native";
 
-import { SelectList } from "react-native-dropdown-select-list";
+import { SelectList, DropDownSelect } from "react-native-dropdown-select-list";
+
 import NumericInput from "react-native-numeric-input";
 import BHCard from "../components/BHCard";
 import RadioForm, {
@@ -25,7 +26,7 @@ import axios from "axios";
 import NearbyColleges from "../components/NearbyColleges";
 
 const BHhoom = ({ navigation }) => {
-  const [selected, setSelected] = React.useState(null);
+  const [selected, setSelected] = React.useState([]);
   const [bedspaces, setBedspaces] = React.useState(1);
   const [viewLoading, setViewLoading] = React.useState(false);
   const [gender, setGender] = React.useState(0);
@@ -60,6 +61,27 @@ const BHhoom = ({ navigation }) => {
     { key: "6", value: "6" },
   ];
 
+  const house = [
+    {
+      data: { latitude: -12.969825, longitude: 28.6510915 },
+      key: "ChIJXxwI9d-0bBkREAD7-7EJKis",
+      value: "Northrise University",
+    },
+    {
+      data: { latitude: -12.9541186, longitude: 28.6487254 },
+      key: "ChIJvYMQehW1bBkRmYBtnEsvRq0",
+      value: "Arthur David College of Paediatric and Child Health Nursing",
+    },
+    {
+      data: { latitude: -12.9448429, longitude: 28.655469 },
+      key: "ChIJlcEShNq1bBkRC0Nvz8jiETo",
+      value: "Lusaka",
+    },
+  ];
+
+  const handleItemSelect = (item) => {
+    console.log(item.data);
+  };
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
     const aspectRatio = height / width;
@@ -107,10 +129,12 @@ const BHhoom = ({ navigation }) => {
       const colleges = response.data.results.map((college) => ({
         key: college.place_id,
         value: college.name,
-        latitude: college.geometry.location.lat,
-        longitude: college.geometry.location.lng,
+        data: {
+          latitude: college.geometry.location.lat,
+          longitude: college.geometry.location.lng,
+        },
       }));
-      // console.log(colleges);
+      console.log(colleges);
       setCollegesData(colleges);
     } catch (error) {
       console.log("Error fetching colleges: ", error);
@@ -205,15 +229,22 @@ const BHhoom = ({ navigation }) => {
             }}
           >
             <SelectList
-              setSelected={(val) => setSelected(val)}
-              data={collegesData}
+              // setSelected={(val) => setSelected(val)}
+              data={collegesData.map((item) => ({
+                ...item,
+                label: item.value,
+              }))}
+              labelField="label"
+              valueField="key"
               totalHeight={20}
-              save="value"
-              onSelect={(item) => console.log("Selected:", selected)}
+              save={"data"}
+              onChange={(item) => console.log("Selected:", item.data)}
               style={{
                 ...(isTablet() && { fontSize: 16, fontWeight: "700" }),
               }}
             />
+
+            
           </View>
         </View>
         <View
