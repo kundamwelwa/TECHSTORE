@@ -19,7 +19,6 @@ import {
 
 const BHCard = (props) => {
   const { price, address, distance, rating } = props;
-
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
     const aspectRatio = height / width;

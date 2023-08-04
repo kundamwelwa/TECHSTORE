@@ -18,7 +18,8 @@ import BHResults from "./BHResults";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./Details";
-import Map from './Map';
+import Map from "./Map";
+import LiveMap from "./LiveMap";
 
 // Create a stack navigator
 const Stack = createStackNavigator();
@@ -44,6 +45,11 @@ const Room = () => {
       <Stack.Screen
         name="Map"
         component={Map}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LiveMap"
+        component={LiveMap}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

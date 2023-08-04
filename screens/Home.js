@@ -114,10 +114,10 @@ export default class Home extends Component {
             tabBarIndicatorStyle: { backgroundColor: "#EE3855" },
           }}
         >
-          {/* <Tab.Screen name="Rent" component={Rent} /> */}
           <Tab.Screen name="boarding houses" component={Room} />
-          {/* <Tab.Screen name="Buy" component={Buy} /> */}
-          {/* <Tab.Screen name="Plots" component={Plots} /> */}
+          {/* <Tab.Screen name="Rent" component={Rent} />
+          <Tab.Screen name="Buy" component={Buy} /> */}
+          
         </Tab.Navigator>
       </NavigationContainer>
     );

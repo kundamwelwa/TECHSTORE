@@ -147,7 +147,7 @@ const BHResults = ({ navigation }) => {
         style={{ backgroundColor: "#fff", flexGrow: 1 }}
         horizontal
       >
-        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
           <BHCard
             price={1000}
             rating={4}
@@ -155,7 +155,7 @@ const BHResults = ({ navigation }) => {
             distance={120}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
           <BHCard
             price={1000}
             rating={4}
@@ -163,7 +163,7 @@ const BHResults = ({ navigation }) => {
             distance={120}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
           <BHCard
             price={1000}
             rating={4}
@@ -171,7 +171,7 @@ const BHResults = ({ navigation }) => {
             distance={120}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
           <BHCard
             price={1000}
             rating={4}

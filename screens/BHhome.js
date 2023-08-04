@@ -90,20 +90,13 @@ const BHhoom = ({ navigation }) => {
   };
 
   const goToResultsScreen = () => {
-    if (institution == "") {
-      Alert.alert(
-        "Mandatory field empty",
-        "Select an instituion from the drop down selection"
-      );
-    } else {
-      setViewLoading(true);
-      // console.log(institution, " ", bedspaces, " ", bhgender);
-      setTimeout(() => {
-        navigation.navigate("Map");
-        // navigation.navigate("Results", { institution, bedspaces, bhgender });
-        setViewLoading(false);
-      }, 3000); // wait for 3 seconds (300 milliseconds) before navigating
-    }
+    setViewLoading(true);
+    // console.log(institution, " ", bedspaces, " ", bhgender);
+    setTimeout(() => {
+      navigation.navigate("Map");
+      // navigation.navigate("Results", { institution, bedspaces, bhgender });
+      setViewLoading(false);
+    }, 3000); // wait for 3 seconds (300 milliseconds) before navigating
   };
 
   // Function to get device's current location and fetch colleges
@@ -134,7 +127,7 @@ const BHhoom = ({ navigation }) => {
           longitude: college.geometry.location.lng,
         },
       }));
-      console.log(colleges);
+      // console.log(colleges);
       setCollegesData(colleges);
     } catch (error) {
       console.log("Error fetching colleges: ", error);
@@ -213,39 +206,15 @@ const BHhoom = ({ navigation }) => {
         <View style={{ marginHorizontal: 10, marginTop: -25 }}>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 15,
               color: "black",
               fontWeight: "bold",
               marginBottom: 5,
-              ...(isTablet() && { fontSize: 22, fontWeight: "700" }),
+              ...(isTablet() && { fontSize: 24, fontWeight: "700" }),
             }}
           >
-            Institution
+            Boarding house type by gender
           </Text>
-          <View
-            style={{
-              marginVertical: 10,
-              ...(isTablet() && { marginEnd: "40%" }),
-            }}
-          >
-            <SelectList
-              // setSelected={(val) => setSelected(val)}
-              data={collegesData.map((item) => ({
-                ...item,
-                label: item.value,
-              }))}
-              labelField="label"
-              valueField="key"
-              totalHeight={20}
-              save={"data"}
-              onChange={(item) => console.log("Selected:", item.data)}
-              style={{
-                ...(isTablet() && { fontSize: 16, fontWeight: "700" }),
-              }}
-            />
-
-            
-          </View>
         </View>
         <View
           style={{
@@ -469,25 +438,46 @@ const BHhoom = ({ navigation }) => {
         }}
         horizontal
       >
-        <BHCard price={1000} rating={4} address={"45 kalewa"} distance={120} />
-        <BHCard
-          price={750}
-          rating={5}
-          address={"22 Arthur davison"}
-          distance={100}
-        />
-        <BHCard
-          price={1000}
-          rating={4}
-          address={"20 Mwami road"}
-          distance={45}
-        />
-        <BHCard
-          price={1200}
-          rating={4}
-          address={"22 Mwatiyanvwa"}
-          distance={45}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+          <BHCard
+            price={750}
+            rating={5}
+            address={"22 Arthur davison"}
+            distance={100}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+          <BHCard
+            price={750}
+            rating={5}
+            address={"22 Arthur davison"}
+            distance={100}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+          <BHCard
+            price={750}
+            rating={5}
+            address={"22 Arthur davison"}
+            distance={100}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+          <BHCard
+            price={750}
+            rating={5}
+            address={"22 Arthur davison"}
+            distance={100}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+          <BHCard
+            price={750}
+            rating={5}
+            address={"22 Arthur davison"}
+            distance={100}
+          />
+        </TouchableOpacity>
       </ScrollView>
     </ScrollView>
   );

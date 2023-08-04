@@ -9,24 +9,61 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import {
-  EvilIcons,
-  MaterialCommunityIcons,
   Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  FontAwesome,
+  EvilIcons,
 } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import AnimatedLottieView from "lottie-react-native";
-import RBSheet from "react-native-raw-bottom-sheet";
+
 import BHCard from "../components/BHCard";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GOOGLE_API_KEY } from "../ENVIRONMENTS";
+import AddressPicker from "../components/AddressPicker";
+import MapViewDirections from "react-native-maps-directions";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 export default function Map({ navigation }) {
   const [location, setLocation] = useState(null);
   const [city, setCity] = React.useState("");
   const [street, setStreet] = useState(""); // State to store the street name
-
+  const mapRef = useRef();
+  const bsRef = useRef();
   const [mapReady, setMapReady] = useState(false);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [destination, setDestination] = useState(null);
+
+  const [institution, setInstitution] = useState("Zict college");
+  const [bedspaces, setBedspaces] = useState(2);
+  const [bhgender, setBhgender] = useState("Male");
+
+  const isTablet = () => {
+    const { width, height } = Dimensions.get("window");
+    const aspectRatio = height / width;
+    // Adjust the threshold value as per your requirement
+    return aspectRatio <= 1.6;
+  };
+  const handleMarkerPress = (shop) => {
+    const mark = {
+      latitude: shop.Latitude,
+      longitude: shop.Longitude,
+    };
+    setSelectedMarker(mark);
+    openBottomSheet();
+  };
+
+  const openBottomSheet = () => {
+    bsRef.current.open();
+  };
+  const handlePlaceSelected = (data, details) => {
+    console.log("Selected Place Details:", details);
+  };
 
   const fetchedAeromechanicsShops = [
     // Replace with your actual fetched data
@@ -79,6 +116,12 @@ export default function Map({ navigation }) {
       Latitude: -12.949464,
       Longitude: 28.642954,
     },
+    {
+      ShopID: 9,
+      ShopName: "BH 8",
+      Latitude: -12.9576602,
+      Longitude: 28.629381,
+    },
 
     // Add more shops as needed
   ];
@@ -116,7 +159,7 @@ export default function Map({ navigation }) {
   // Handle button press event
   const handleButtonPress = () => {
     // Add your button's functionality here
-    bottomSheetRef.current.open(); // Open the bottom sheet when the button is pressed
+    bsRef.current.open(); // Open the bottom sheet when the button is pressed
   };
 
   if (!location) {
@@ -155,26 +198,16 @@ export default function Map({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <MapView
+        ref={mapRef}
         provider="google"
         style={styles.map}
         initialRegion={{
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.0522,
-          longitudeDelta: 0.0221,
+          latitudeDelta: 0.0222,
+          longitudeDelta: 0.0121,
         }}
       >
-        <Circle
-          center={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
-          radius={1000}
-          fillColor="rgba(0, 255, 0, 0.1)" // Adjust the fill color and opacity as needed
-          strokeColor="rgba(0, 0, 0, 1)" // Adjust the stroke color and opacity as needed
-          strokeWidth={1}
-        />
-
         {fetchedAeromechanicsShops.map((shop) => (
           <Marker
             key={shop.ShopID}
@@ -183,19 +216,307 @@ export default function Map({ navigation }) {
               longitude: shop.Longitude,
             }}
             title={shop.ShopName}
-            // Add more details to the callout if needed
-            // description={...}
-            image={require("../assets/icons/home2.png")}
-            style={styles.marker}
+            onPress={() => {
+              handleMarkerPress(shop);
+            }}
+            image={require("../assets/icons/home4.png")}
           />
         ))}
+
+        {destination && (
+          <Circle
+            center={{
+              latitude: destination.latitude,
+              longitude: destination.longitude,
+            }}
+            radius={500}
+            fillColor="rgba(0, 255, 0, 0.1)" // Adjust the fill color and opacity as needed
+            strokeColor="rgba(0, 0, 0, 1)" // Adjust the stroke color and opacity as needed
+            strokeWidth={1}
+          />
+        )}
+
+        {destination && selectedMarker && (
+          <>
+            <MapViewDirections
+              origin={{
+                latitude: selectedMarker.latitude,
+                longitude: selectedMarker.longitude,
+              }}
+              destination={{
+                latitude: destination.latitude,
+                longitude: destination.longitude,
+              }}
+              mode="WALKING"
+              apikey={GOOGLE_API_KEY}
+              strokeWidth={3}
+              strokeColor="#124e78"
+              optimizeWaypoints={true}
+              onReady={(result) => {
+                // alert(address);
+                mapRef.current.fitToCoordinates(result.coordinates, {
+                  edgePadding: {
+                    right: 30,
+                    bottom: 150,
+                    left: 30,
+                    top: 150,
+                  },
+                });
+              }}
+            />
+          </>
+        )}
       </MapView>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}
       >
         <Ionicons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+      <View style={styles.searchContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back-sharp" size={24} color="black" />
+        </TouchableOpacity>
+        <View style={{ marginBottom: 10 }} />
+        <AddressPicker
+          placeholdeText="search by institution"
+          fetchAddress={(latitude, longitude) => {
+            setDestination({ latitude, longitude });
+            console.log(destination);
+          }}
+        />
+        <View
+          style={{
+            justifyContent: "center",
+            marginTop: 2,
+            backgroundColor: "#EE3855",
+            paddingVertical: 10,
+            paddingHorizontal: 5,
+            borderRadius: 5,
+          }}
+        >
+          <Text style={{ color: "#fff", fontSize: 12 }}>
+            <Text style={{ color: "#fff", fontWeight: "bold" }}>Note: </Text>{" "}
+            Click on the BH icon for more Boarding house details
+          </Text>
+        </View>
+        <RBSheet
+          ref={bsRef}
+          height={Dimensions.get("window").height * 0.37}
+          duration={500}
+          closeOnDragDown={false}
+          closeOnPressMask={true}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              borderTopColor: "rgb(120, 120, 120)",
+              borderTopWidth: 4,
+              padding: 10,
+            },
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              bsRef.current.close();
+              navigation.navigate("Results", {
+                institution,
+                bedspaces,
+                bhgender,
+              });
+            }}
+          >
+            <Text
+              style={{
+                color: "#EE3855",
+                fontWeight: "bold",
+                textDecorationLine: "underline",
+              }}
+            >
+              View (10) related results
+            </Text>
+          </TouchableOpacity>
+
+          <View
+            style={{
+              flexDirection: "row",
+              paddingVertical: 20,
+              width: "100%",
+            }}
+          >
+            <ImageBackground
+              source={require("../assets/images/bh3.png")}
+              resizeMethod="resize"
+              imageStyle={{ borderRadius: 10 }}
+              style={{
+                height: Dimensions.get("window").height * 0.17,
+                width: 150,
+                borderRadius: 10,
+                ...(isTablet() && {
+                  height: 180,
+                }),
+              }}
+            />
+
+            <View
+              style={{
+                paddingStart: 20,
+                width: "60%",
+                marginEnd: 20,
+                marginStart: 7,
+              }}
+            >
+              <Text style={{ fontWeight: "600", fontSize: 20 }}>
+                Northrise, Ndola
+              </Text>
+              <Text
+                style={{ fontWeight: "300", fontSize: 14, marginBottom: 5 }}
+              >
+                Kalewa 22
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: 5,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={18}
+                  color="#000"
+                />
+                <Text
+                  style={{
+                    color: "#000",
+                    marginStart: 5,
+                    ...(isTablet() && {
+                      fontSize: 18,
+                    }),
+                  }}
+                >
+                  {" "}
+                  {23}m
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  marginTop: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <MaterialCommunityIcons name="shower" size={18} color="#000" />
+                <Text
+                  style={{
+                    color: "#000",
+                    marginStart: 5,
+                    textDecorationLine: "line-through",
+                    ...(isTablet() && {
+                      fontSize: 18,
+                    }),
+                  }}
+                >
+                  {" "}
+                  Self Contained
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  marginTop: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <MaterialCommunityIcons name="cash" size={18} color="#000" />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    padding: 3,
+                    marginVertical: 5,
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      color: "#000",
+                      ...(isTablet() && {
+                        fontSize: 22,
+                      }),
+                    }}
+                  >
+                    K {750}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#000",
+                      ...(isTablet() && {
+                        fontSize: 16,
+                      }),
+                    }}
+                  >
+                    /month
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginHorizontal: 10,
+            }}
+          >
+            <TouchableOpacity
+              style={{ alignItems: "center", flexDirection: "row" }}
+              onPress={() => {
+                bsRef.current.close();
+                navigation.navigate("Details");
+              }}
+            >
+              <Ionicons name="eye" size={24} color="black" />
+              <Text style={{ marginStart: 5 }}>Details</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#EE3855",
+                borderRadius: 20,
+                elevation: 5,
+                width: "60%",
+                height: 60,
+                alignItems: "center",
+                justifyContent: "center",
+                ...(isTablet() && {
+                  width: 200,
+                  height: 80,
+                }),
+              }}
+              onPress={() => console.log("clicked")}
+            >
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: "500",
+                  color: "#fff",
+                  ...(isTablet() && {
+                    fontSize: 24,
+                  }),
+                }}
+              >
+                Book Now
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </RBSheet>
+      </View>
     </SafeAreaView>
   );
 }
@@ -244,6 +565,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 30,
     alignSelf: "center",
+  },
+  searchContainer: {
+    position: "absolute",
+    width: "100%",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    padding: 10,
+    top: 0,
   },
   button: {
     backgroundColor: "#ee3855",

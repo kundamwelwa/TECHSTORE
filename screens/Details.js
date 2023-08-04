@@ -24,12 +24,53 @@ import ViewMoreText from "react-native-view-more-text";
 
 const Details = ({ navigation }) => {
   const [ViewModal, setViewModal] = React.useState(true);
+
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
     const aspectRatio = height / width;
     // Adjust the threshold value as per your requirement
     return aspectRatio <= 1.6;
   };
+
+  const house = [
+    {
+      id: 1,
+      imageUrl: require("../assets/images/bh10.jpeg"),
+    },
+    {
+      id: 2,
+      imageUrl: require("../assets/images/bh2.jpg"),
+    },
+    {
+      id: 3,
+      imageUrl: require("../assets/images/bh3.png"),
+    },
+    {
+      id: 4,
+      imageUrl: require("../assets/images/bh4.jpg"),
+    },
+    {
+      id: 5,
+      imageUrl: require("../assets/images/bh5.jpeg"),
+    },
+    {
+      id: 6,
+      imageUrl: require("../assets/images/bh6.jpg"),
+    },
+    {
+      id: 7,
+      imageUrl: require("../assets/images/bh7.jpg"),
+    },
+  ];
+
+  const [selectedImageUrl, setSelectedImageUrl] = React.useState(
+    house[0].imageUrl
+  );
+
+  const handleHousePress = (item) => {
+    setSelectedImageUrl(item.imageUrl);
+  };
+
   const renderViewMore = (onPress) => {
     return (
       <Text
@@ -76,16 +117,31 @@ const Details = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.modalStyle}>
+    <View style={styles.modalStyle}>
       <ImageBackground
-        source={require("../assets/images/bh5.jpeg")}
+        source={selectedImageUrl}
         imageStyle={{
           resizeMode: "cover",
           height: "100%",
           // position: "relative",
         }}
         style={{ backgroundColor: "#dcdcdd", width: "100%", height: "50%" }}
-      ></ImageBackground>
+      >
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            margin: 5,
+            padding: 5,
+            backgroundColor: "rgba(0,0,0,0.2)",
+            width: 40,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 5,
+          }}
+        >
+          <Ionicons name="chevron-back" size={24} color="#fff" />
+        </TouchableOpacity>
+      </ImageBackground>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -93,7 +149,7 @@ const Details = ({ navigation }) => {
         style={{
           backgroundColor: "#fff",
           height: "100%",
-          marginTop: -100,
+          marginTop: -70,
           borderTopLeftRadius: 25,
           borderTopRightRadius: 25,
           shadowColor: "black",
@@ -120,72 +176,36 @@ const Details = ({ navigation }) => {
         <ScrollView
           horizontal
           style={{ marginVertical: 15 }}
-          showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={true}
+          style={{
+            paddingVertical: 12,
+          }}
         >
-          <ImageBackground
-            source={require("../assets/images/bh5.jpeg")}
-            imageStyle={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-            }}
-            style={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-              marginEnd: 20,
-            }}
-          ></ImageBackground>
-          <ImageBackground
-            source={require("../assets/images/bh3.png")}
-            imageStyle={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-            }}
-            style={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-              marginEnd: 20,
-            }}
-          ></ImageBackground>
-          <ImageBackground
-            source={require("../assets/images/bh7.jpg")}
-            imageStyle={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-            }}
-            style={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-              marginEnd: 20,
-            }}
-          ></ImageBackground>
-          <ImageBackground
-            source={require("../assets/images/bh6.jpg")}
-            imageStyle={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-            }}
-            style={{
-              borderRadius: 10,
-              backgroundColor: "#dcdcdc",
-              width: 80,
-              height: 80,
-              marginEnd: 20,
-            }}
-          ></ImageBackground>
+          {house.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => handleHousePress(item)}
+            >
+              <ImageBackground
+                source={item.imageUrl}
+                imageStyle={{
+                  borderRadius: 10,
+                  backgroundColor: "#dcdcdc",
+                  width: 80,
+                  height: 80,
+                }}
+                style={{
+                  borderRadius: 10,
+                  backgroundColor: "#dcdcdc",
+                  width: 80,
+                  height: 80,
+                  marginEnd: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              ></ImageBackground>
+            </TouchableOpacity>
+          ))}
         </ScrollView>
         <Text
           style={{
@@ -505,7 +525,7 @@ const Details = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -515,7 +535,6 @@ const styles = StyleSheet.create({
   modalStyle: {
     flex: 1,
     backgroundColor: "white",
-    paddingTop: Platform.OS == "android" ? 0 : 45,
     padddingHorizontal: 10,
   },
 });
