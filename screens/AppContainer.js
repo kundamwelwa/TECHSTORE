@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./Home";
 import Login from "./Login";
@@ -32,6 +31,7 @@ const AppContainer = () => {
         name="OTP"
         component={OTPScreen}
       />
+
       <Stack.Screen
         options={{
           headerShown: false, // Hide the screen title for Screen1

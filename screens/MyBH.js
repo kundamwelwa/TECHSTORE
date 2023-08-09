@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const MyAds = () => {
+const MyBH = () => {
   return (
     <View>
-      <Text>MyAds</Text>
+      <Text>MyBH</Text>
     </View>
   )
 }
 
-export default MyAds
+export default MyBH
 
 const styles = StyleSheet.create({})

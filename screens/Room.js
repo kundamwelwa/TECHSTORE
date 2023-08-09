@@ -20,6 +20,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./Details";
 import Map from "./Map";
 import LiveMap from "./LiveMap";
+import Profile from "./Profile";
+import Notifications from "./Notifications";
+import MyBH from "./MyBH";
+import ListBH from './ListBH';
 
 // Create a stack navigator
 const Stack = createStackNavigator();
@@ -50,6 +54,27 @@ const Room = () => {
       <Stack.Screen
         name="LiveMap"
         component={LiveMap}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MyBH"
+        component={MyBH}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="ListBH"
+        component={ListBH}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
