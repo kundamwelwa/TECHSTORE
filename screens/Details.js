@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Dimensions,
   Modal,
+  Linking,
 } from "react-native";
 import React, { Component } from "react";
 import {
@@ -30,6 +31,16 @@ const Details = ({ navigation }) => {
     const aspectRatio = height / width;
     // Adjust the threshold value as per your requirement
     return aspectRatio <= 1.6;
+  };
+  let LandLordContact = "";
+  const makeCall = () => {
+    if (Platform.OS == "android") {
+      LandLordContact = "tel:${+260963676321}";
+    } else {
+      LandLordContact = "telprompt:${+260963676321}";
+    }
+
+    Linking.openURL(LandLordContact);
   };
 
   const house = [
@@ -308,7 +319,7 @@ const Details = ({ navigation }) => {
                 height: 50,
               }),
             }}
-            onPress={() => console.log("clicked")}
+            onPress={() => makeCall()}
           >
             <FontAwesome
               name="phone"
@@ -508,7 +519,7 @@ const Details = ({ navigation }) => {
                 height: 80,
               }),
             }}
-            onPress={() => console.log("clicked")}
+            onPress={() => navigation.navigate("PaymentScreen")}
           >
             <Text
               style={{

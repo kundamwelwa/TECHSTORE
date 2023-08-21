@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const AppContainer = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Log in"
         component={Login}
         options={{
@@ -30,7 +30,7 @@ const AppContainer = () => {
         }}
         name="OTP"
         component={OTPScreen}
-      />
+      /> */}
 
       <Stack.Screen
         options={{

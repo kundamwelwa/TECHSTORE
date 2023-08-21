@@ -24,6 +24,7 @@ import Profile from "./Profile";
 import Notifications from "./Notifications";
 import MyBH from "./MyBH";
 import ListBH from './ListBH';
+import PaymentScreen from "./PaymentScreen";
 
 // Create a stack navigator
 const Stack = createStackNavigator();
@@ -56,7 +57,6 @@ const Room = () => {
         component={LiveMap}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="Profile"
         component={Profile}
@@ -75,6 +75,11 @@ const Room = () => {
        <Stack.Screen
         name="ListBH"
         component={ListBH}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="PaymentScreen"
+        component={PaymentScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

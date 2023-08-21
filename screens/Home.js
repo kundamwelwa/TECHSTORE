@@ -31,7 +31,13 @@ import Advert from "../components/advert";
 import Map from "./Map";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
+import {
+  Button,
+  Menu,
+  Divider,
+  PaperProvider,
+  Drawer,
+} from "react-native-paper";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
@@ -39,6 +45,9 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.bottomSheetRef = React.createRef();
+    this.state = {
+      visible: false,
+    };
   }
 
   state = {
@@ -48,6 +57,14 @@ export default class Home extends Component {
     componentWidth: this.width * 0.7,
     SOS: "",
     BR: 0,
+  };
+
+  openMenu = () => {
+    this.setState({ visible: true });
+  };
+
+  closeMenu = () => {
+    this.setState({ visible: false });
   };
 
   openBottomSheet = () => {
@@ -84,13 +101,24 @@ export default class Home extends Component {
               marginEnd: 25,
             }}
           >
-            <TouchableOpacity onPress={this.openBottomSheet}>
-              <Feather
-                name="menu"
-                size={this.isTablet() ? 50 : 30}
-                color="#EE3855"
-              />
-            </TouchableOpacity>
+            <Menu
+              visible={this.state.visible}
+              onDismiss={this.closeMenu}
+              anchor={
+                <Feather
+                  onPress={this.openMenu}
+                  name="menu"
+                  size={this.isTablet() ? 50 : 30}
+                  color="#EE3855"
+                />
+              }
+              theme={{ colors: { primary: "green" } }}
+            >
+              <Menu.Item onPress={() => {}} title="Item 1" />
+              <Menu.Item onPress={() => {}} title="Item 2" />
+              <Divider />
+              <Menu.Item onPress={() => {}} title="Log Out" />
+            </Menu>
             <Image
               style={{
                 width: "50%",
@@ -136,9 +164,7 @@ export default class Home extends Component {
                   borderBottomColor: "#666666",
                   paddingBottom: 10,
                 }}
-                onPress={() =>
-                  this.props.navigation.navigate("Profile")
-                }
+                onPress={() => this.props.navigation.navigate("Profile")}
               >
                 <Ionicons name="person" size={20} color="#666666" />
                 <Text
