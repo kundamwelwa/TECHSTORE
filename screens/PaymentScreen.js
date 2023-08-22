@@ -6,21 +6,50 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { List, Modal, Portal, Button } from "react-native-paper";
-const PaymentScreen = ({ navigation }) => {
+import * as Animatable from "react-native-animatable";
+import PaymentSuccessAnimation from "./../components/PaymentSuccessAnimation";
+import TextInputWithLeadingText from "../components/TextInputWithLeadingText";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+
+const PaymentScreen = ({ navigation, onAnimationComplete }) => {
   const [expanded, setExpanded] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
+  const [animationVisible, setAnimationVisible] = useState(false);
+  const animationRef = useRef(null);
+  const [inputValue, setInputValue] = useState("");
+  const [AcceptTC, setAcceptTC] = useState(false);
+
+  const changeTC = (value) => {
+    setAcceptTC(value);
+  };
+  const startAnimation = () => {
+    setAnimationVisible(true); // Show the animation view
+  };
+
+  useEffect(() => {
+    // Trigger onAnimationComplete after animation is done
+    if (onAnimationComplete) {
+      onAnimationComplete();
+    }
+  }, []);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   const containerStyle = {
     backgroundColor: "white",
-    padding: 10,
+    padding: 20,
     marginHorizontal: 40,
     height: 300,
-    borderRadius: 3,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.7,
+    shadowOffset: {
+      height: 3,
+      width: 3,
+    },
   };
 
   const handlePress = () => setExpanded(!expanded);
@@ -152,13 +181,112 @@ const PaymentScreen = ({ navigation }) => {
             />
           </List.Accordion>
         </List.Section>
+        <View
+          style={{
+            backgroundColor: "white",
+            padding: 10,
+            marginVertical: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "800",
+              color: "#000",
+              marginBottom: 10,
+            }}
+          >
+            Terms & Conditions
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 2,
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "400",
+                color: "#000",
+                marginEnd: 10,
+                lineHeight: 18,
+              }}
+            >
+              The terms and conditions for using the PezaBond Boarding House
+              Finder App outline user responsibilities, intellectual property
+              rights, privacy policies, disclaimers, limitations of liability,
+              and governing laws, ensuring that users agree to abide by the
+              specified guidelines and legal aspects before utilizing the app's
+              services do you accept the terms and conditions of using the
+              application.
+            </Text>
+          </View>
+          <BouncyCheckbox
+            size={18}
+            fillColor="#EE3855"
+            unfillColor="#FFFFFF"
+            text="Accept"
+            iconInnerStyle={{ borderWidth: 1 }}
+            onPress={(isChecked: boolean) => changeTC(isChecked)}
+            style={{ marginVertical: 15 }}
+          />
+        </View>
         <Portal>
           <Modal
             visible={visible}
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}
           >
-            <Text>Example Modal. Click outside this area to dismiss.</Text>
+            {animationVisible && (
+              <Animatable.View animation="bounceIn" iterationCount={1}>
+                <PaymentSuccessAnimation />
+              </Animatable.View>
+            )}
+            <View style={{ alignItems: "center" }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "gray",
+                  marginBottom: 30,
+                  justifyContent: "center",
+                  marginTop: 20,
+                }}
+              >
+                Enter your mobile money number and complete payment by entering
+                your pin.
+              </Text>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <TextInputWithLeadingText
+                leadingText="+260"
+                placeholder="Enter Mobile number"
+                keyboardType="numeric"
+                textContentType="telephoneNumber"
+                fontSize={18}
+                textAlign="left"
+                maxLength={9}
+                leadingTextColor="#EE3855" // Change this color
+                selectionColor="#EE3855" // Change this color
+              />
+            </View>
+            <TouchableOpacity
+              onPress={startAnimation}
+              style={{
+                height: 50,
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#EE3855",
+                borderRadius: 7,
+                marginVertical: 30,
+              }}
+            >
+              <Text style={{ color: "#fff", fontSize: 18, fontWeight: "500" }}>
+                Pay Now
+              </Text>
+            </TouchableOpacity>
           </Modal>
         </Portal>
       </ScrollView>

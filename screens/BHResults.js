@@ -66,7 +66,7 @@ const BHResults = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: "#fff", paddingHorizontal: 10 }}>
+    <ScrollView style={{ backgroundColor: "#fff", paddingHorizontal: 5 }}>
       <View
         style={{
           backgroundColor: "#fff",

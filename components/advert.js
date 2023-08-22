@@ -23,13 +23,22 @@ const Advert = () => {
     return aspectRatio <= 1.6;
   };
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "center",
+        paddingTop: 20,
+        width: "100%",
+        borderBottomColor: "gray",
+        borderBottomWidth: 0.2,
+        paddingVertical: 20,
+        backgroundColor: "#fff",
+      }}
+    >
       <Text
         style={{
           fontWeight: "bold",
           fontSize: 18,
-          marginVertical: 20,
-          marginTop: 20,
           ...(isTablet() && {
             fontSize: 24,
           }),
@@ -43,8 +52,6 @@ const Advert = () => {
         style={{
           fontWeight: "bold",
           fontSize: 18,
-          marginVertical: 20,
-          marginTop: 20,
           color: "#EE3855",
           ...(isTablet() && {
             fontSize: 24,
@@ -59,8 +66,6 @@ const Advert = () => {
         style={{
           fontWeight: "bold",
           fontSize: 18,
-          marginVertical: 20,
-          marginTop: 20,
           ...(isTablet() && {
             fontSize: 24,
           }),
