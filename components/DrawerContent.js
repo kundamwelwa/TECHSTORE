@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Share } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -23,6 +23,30 @@ const DrawerContent = (props) => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
+  };
+  const handleShare = async () => {
+    try {
+      const shareOptions = {
+        message:
+          "I have downloaded the PEZABOND app and booked a boarding house through the app. Download the app from the link provided and check out their promotion! Download it here: https://www.yourappdownloadlink.com",
+        url: "https://www.wedeveloperszm.com", // Replace with your app's actual download link
+      };
+      const result = await Share.share(shareOptions);
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // Shared successfully
+          console.log("Shared successfully");
+        } else {
+          // Shared cancelled
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // Dismissed
+        alert("Tell a friend to tell a friend");
+      }
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
   };
 
   return (
@@ -102,9 +126,7 @@ const DrawerContent = (props) => {
                 <Icon name="share-variant-outline" color={color} size={22} />
               )}
               label="Share App"
-              onPress={() => {
-                props.navigation.navigate("Share");
-              }}
+              onPress={handleShare}
             />
           </Drawer.Section>
           <Drawer.Section title="Owner Section" style={styles.drawerSection}>
