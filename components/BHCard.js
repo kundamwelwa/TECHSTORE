@@ -29,7 +29,6 @@ const BHCard = (props) => {
   return (
     <View
       style={{
-        flexGrow: 1,
         height: 250,
         width: 180,
         backgroundColor: "#fff",

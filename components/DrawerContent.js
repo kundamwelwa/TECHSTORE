@@ -92,7 +92,7 @@ const DrawerContent = (props) => {
                   color={color}
                 />
               )}
-              label="Boarding houses"
+              label="Near me"
               onPress={() => {
                 props.navigation.navigate("Boardinghouses");
               }}
