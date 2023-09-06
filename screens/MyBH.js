@@ -2,7 +2,25 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
+import DaysBetweenDates from "../components/DaysBetweenDates";
 const MyBH = ({ navigation }) => {
+  const getCurrentMonthDays = () => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Get the number of days in the current month
+
+    const daysArray = [];
+    for (let day = 1; day <= daysInMonth; day++) {
+      daysArray.push(day);
+    }
+
+    return daysArray;
+  };
+
+  const currentMonthDays = getCurrentMonthDays();
+
   const [foundBH, setfoundBH] = React.useState(true);
   return (
     <View style={styles.container}>
@@ -209,6 +227,8 @@ const MyBH = ({ navigation }) => {
               </Text>
             </View>
           </View>
+
+          <DaysBetweenDates startDate="2023-08-29" endDate="2023-12-06" />
         </View>
       )}
     </View>

@@ -77,7 +77,7 @@ const DrawerContent = (props) => {
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={(color, size) => (
-                <Icon name="home-outline" color={color} size={26} />
+                <Ionicons name="ios-home-outline" size={22} color="black" />
               )}
               label="Home"
               onPress={() => {

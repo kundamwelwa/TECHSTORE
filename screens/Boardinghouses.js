@@ -23,6 +23,7 @@ import NumericInput from "react-native-numeric-input";
 import RadioForm from "react-native-simple-radio-button";
 import { Button } from "react-native-paper";
 import BHListCard from "../components/BHListCard";
+import * as Animatable from "react-native-animatable";
 
 const Boardinghouses = ({ navigation }) => {
   const refRBSheet = useRef();
@@ -57,113 +58,72 @@ const Boardinghouses = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View
-          style={{
-            flexDirection: "row",
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <TouchableOpacity onPress={openBottomSheet}>
-            <Ionicons name="filter" size={24} color="#EE3855" />
-          </TouchableOpacity>
-          <View style={styles.searchBox}>
-            <TextInput
-              placeholder="search here"
-              clearButtonMode="always"
-              autoCapitalize="none"
-              fontSize={16}
-              style={{ width: "90%" }}
-              selectionColor="#EE3855" // Change this color
-            />
-            <TouchableOpacity onPress={openBottomSheet}>
-              <Feather name="search" size={24} color="#EE3855" />
-            </TouchableOpacity>
-          </View>
+      <Animatable.View
+        animation={"fadeInLeft"}
+        duration={800}
+        style={{ flexDirection: "row", marginBottom: 20 }}
+      >
+        <View style={styles.sideBorder}></View>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: "700" }}>
+            Find your home
+          </Text>
+          <Text style={{ fontSize: 15, fontWeight: "500" }}>
+            away from home
+          </Text>
         </View>
+      </Animatable.View>
 
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-            marginTop: 10,
-            marginTop: 10,
-            marginBottom: 5,
-          }}
-        >
-          Near you
-        </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <TouchableOpacity onPress={openBottomSheet}>
+          <Ionicons name="filter" size={24} color="#EE3855" />
+        </TouchableOpacity>
+        <View style={styles.searchBox}>
+          <TextInput
+            placeholder="search here"
+            clearButtonMode="always"
+            autoCapitalize="none"
+            fontSize={16}
+            style={{ width: "90%" }}
+            selectionColor="#EE3855" // Change this color
+          />
+          <TouchableOpacity onPress={openBottomSheet}>
+            <Feather name="search" size={24} color="#EE3855" />
+          </TouchableOpacity>
+        </View>
+      </View>
 
-        <View
-          style={{
-            height: 1,
-            width: 45,
-            backgroundColor: "#dedede",
-          }}
-        ></View>
-
-        <ScrollView
-          showsHorizontalScrollIndicator={true}
-          bounce
-          style={{
-            backgroundColor: "#fff",
-            paddingVertical: 10,
-            marginBottom: 10,
-          }}
-          horizontal
-        >
-          <BHCard
-            price={750}
-            rating={5}
-            address={"22 Arthur davison"}
-            distance={100}
-          />
-
-          <BHCard
-            price={750}
-            rating={5}
-            address={"22 Arthur davison"}
-            distance={100}
-          />
-          <BHCard
-            price={750}
-            rating={5}
-            address={"22 Arthur davison"}
-            distance={100}
-          />
-          <BHCard
-            price={750}
-            rating={5}
-            address={"22 Arthur davison"}
-            distance={100}
-          />
-          <BHCard
-            price={750}
-            rating={5}
-            address={"22 Arthur davison"}
-            distance={100}
-          />
-        </ScrollView>
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-            marginTop: 10,
-            marginBottom: 5,
-          }}
-        >
-          Search Results
-        </Text>
-        <View
-          style={{
-            height: 1,
-            width: 45,
-            backgroundColor: "#dedede",
-          }}
-        ></View>
-
+      <Text
+        style={{
+          fontSize: 16,
+          fontWeight: "bold",
+          marginTop: 10,
+          marginBottom: 5,
+        }}
+      >
+        Search Results
+      </Text>
+      <View
+        style={{
+          height: 1,
+          width: 45,
+          marginBottom: 5,
+          backgroundColor: "#dedede",
+        }}
+      ></View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <BHListCard />
+        <BHListCard />
+        <BHListCard />
+        <BHListCard />
+        <BHListCard />
         <BHListCard />
         <BHListCard />
         <BHListCard />
@@ -387,5 +347,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  sideBorder: {
+    height: "100%",
+    width: 3,
+    backgroundColor: "#ee3855",
+    marginRight: 10,
   },
 });

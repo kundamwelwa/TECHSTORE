@@ -183,7 +183,7 @@ const BHhoom = ({ navigation }) => {
                   ...(isTablet() && { fontSize: 28, fontWeight: "bold" }),
                 }}
               >
-                Complete the steps provided
+                Find a home away from home
               </Text>
               <Text
                 style={{
@@ -193,8 +193,8 @@ const BHhoom = ({ navigation }) => {
                   ...(isTablet() && { fontSize: 20 }),
                 }}
               >
-                Our system will suggest the nearest within your institution
-                radius
+                we can save you time, stress and cost while searching for a
+                baording house
               </Text>
             </View>
             <Image
@@ -358,6 +358,7 @@ const BHhoom = ({ navigation }) => {
                   color: "#fff",
                   fontSize: 16,
                   marginStart: 10,
+                  fontWeight: "600",
                   ...(isTablet() && { fontSize: 22, fontWeight: "400" }),
                 }}
               >

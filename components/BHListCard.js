@@ -22,7 +22,7 @@ const BHListCard = ({ props }) => {
       onPress={() => navigation.navigate("Details")}
       style={{
         height: 150,
-        width: "95%",
+        width: "98%",
         backgroundColor: "#fff",
         borderRadius: 10,
         shadowColor: "#000",
