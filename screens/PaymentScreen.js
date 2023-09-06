@@ -103,7 +103,7 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
           <View
             style={{
               height: 45,
-              width: "70%",
+              width: "57%",
               justifyContent: "space-between",
               flexDirection: "row",
               borderRadius: 50,
@@ -123,6 +123,7 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
             <TextInput
               placeholder="discount code"
               maxLength={6}
+              selectionColor="#EE3855" // Change this color
               style={{
                 fontSize: 16,
                 marginStart: 10,
@@ -173,14 +174,23 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
               title="MTN MoMo"
               description="Pay using MTN money"
               onPress={() => showModal()}
+              disabled={!AcceptTC}
             />
             <List.Item
               title="AIRTEL Money"
               description="Pay using airtel money"
               onPress={() => showModal()}
+              disabled={!AcceptTC}
             />
           </List.Accordion>
         </List.Section>
+        {!AcceptTC && (
+          <View>
+            <Text style={{ color: "red", marginStart: 10 }}>
+              Oops! Accept Terms of use to proceed to pay
+            </Text>
+          </View>
+        )}
         <View
           style={{
             backgroundColor: "white",
@@ -225,9 +235,9 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
           </View>
           <BouncyCheckbox
             size={18}
-            fillColor="#EE3855"
+            fillColor="#ee3855"
             unfillColor="#FFFFFF"
-            text="Accept"
+            text="Accept Terms of use"
             iconInnerStyle={{ borderWidth: 1 }}
             onPress={(isChecked: boolean) => changeTC(isChecked)}
             style={{ marginVertical: 15 }}
