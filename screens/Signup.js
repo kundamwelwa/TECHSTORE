@@ -23,6 +23,7 @@ export class Signup extends Component {
       phone: "",
       password: "",
       confirm: "",
+      referralCode: "",
     };
   }
 
@@ -44,7 +45,7 @@ export class Signup extends Component {
   render() {
     const { navigation } = this.props;
     return (
-      <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         <Animatable.Image
           animation="zoomIn"
           duration={1500}
@@ -71,152 +72,187 @@ export class Signup extends Component {
           duration={1500}
           style={{ width: "100%" }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginVertical: 10,
-            }}
-          >
-            <View style={styles.line}></View>
-            <FontAwesome
-              name="user"
-              size={20}
-              color="black"
-              style={{ marginHorizontal: 5 }}
-            />
-
-            <TextInput
-              placeholder="User name"
-              fontSize={16}
-              marginHorizontal={10}
-              returnKeyType="done"
-              autoCapitalize="none"
-              keyboardType="default"
-              width={100}
-              onChangeText={(password) => this.setState({ password })}
-            />
-          </View>
-
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={styles.line}></View>
-            <Entypo
-              name="phone"
-              size={20}
-              color="black"
-              style={{ marginHorizontal: 5 }}
-            />
-            <Text style={{ marginLeft: 5 }}>+260</Text>
-            <TextInput
-              placeholder="Enter your mobile number"
-              fontSize={16}
-              maxLength={9}
-              marginHorizontal={10}
-              returnKeyType="done"
-              keyboardType="phone-pad"
-              onChangeText={(phone) => this.setState({ phone })}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginVertical: 10,
-            }}
-          >
-            <View style={styles.line}></View>
-
-            <Entypo
-              name="lock"
-              size={20}
-              color="black"
-              style={{ marginHorizontal: 5 }}
-            />
-
-            <TextInput
-              placeholder="Password"
-              fontSize={16}
-              marginHorizontal={10}
-              maxLength={8}
-              returnKeyType="done"
-              autoCapitalize="none"
-              keyboardType="default"
-              secureTextEntry={true}
-              width={100}
-              onChangeText={(password) => this.setState({ password })}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginVertical: 10,
-            }}
-          >
-            <View style={styles.line}></View>
-
-            <Entypo
-              name="lock"
-              size={20}
-              color="black"
-              style={{ marginHorizontal: 5 }}
-            />
-
-            <TextInput
-              placeholder="Confirm password"
-              fontSize={16}
-              maxLength={8}
-              marginHorizontal={10}
-              returnKeyType="done"
-              autoCapitalize="none"
-              keyboardType="default"
-              secureTextEntry={true}
-              onChangeText={(confirm) => this.setState({ confirm })}
-            />
-          </View>
-
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 40,
-            }}
-          >
-            <TouchableOpacity
-              style={styles.signInBtn}
-              onPress={() =>
-                navigation.navigate("OTP", { phoneData: this.state.phone })
-              }
+          <KeyboardAvoidingView>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+              }}
             >
-              <Text style={{ fontWeight: "600", fontSize: 18, color: "#fff" }}>
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 30,
-            }}
-          >
-            <TouchableOpacity
-              style={styles.toSignUp}
-              onPress={() => navigation.goBack()}
+              <View style={styles.line}></View>
+              <FontAwesome
+                name="group"
+                size={20}
+                color="black"
+                style={{ marginHorizontal: 5 }}
+              />
+
+              <TextInput
+                placeholder="Referral code"
+                fontSize={16}
+                marginHorizontal={10}
+                returnKeyType="done"
+                autoCapitalize="none"
+                keyboardType="default"
+                width={100}
+                selectionColor="#EE3855" // Change this color
+                onChangeText={(referralCode) => this.setState({ referralCode })}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+              }}
             >
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "#000",
-                }}
+              <View style={styles.line}></View>
+              <FontAwesome
+                name="user"
+                size={20}
+                color="black"
+                style={{ marginHorizontal: 5 }}
+              />
+
+              <TextInput
+                placeholder="User name"
+                fontSize={16}
+                marginHorizontal={10}
+                returnKeyType="done"
+                autoCapitalize="none"
+                keyboardType="default"
+                width={100}
+                selectionColor="#EE3855" // Change this color
+                onChangeText={(password) => this.setState({ password })}
+              />
+            </View>
+
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={styles.line}></View>
+              <Entypo
+                name="phone"
+                size={20}
+                color="black"
+                style={{ marginHorizontal: 5 }}
+              />
+              <Text style={{ marginLeft: 5 }}>+260</Text>
+              <TextInput
+                placeholder="Enter your mobile number"
+                fontSize={16}
+                maxLength={9}
+                selectionColor="#EE3855" // Change this color
+                marginHorizontal={10}
+                returnKeyType="done"
+                keyboardType="phone-pad"
+                onChangeText={(phone) => this.setState({ phone })}
+              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+              }}
+            >
+              <View style={styles.line}></View>
+
+              <Entypo
+                name="lock"
+                size={20}
+                color="black"
+                style={{ marginHorizontal: 5 }}
+              />
+
+              <TextInput
+                placeholder="Password"
+                fontSize={16}
+                marginHorizontal={10}
+                maxLength={8}
+                returnKeyType="done"
+                autoCapitalize="none"
+                keyboardType="default"
+                selectionColor="#EE3855" // Change this color
+                secureTextEntry={true}
+                width={100}
+                onChangeText={(password) => this.setState({ password })}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+              }}
+            >
+              <View style={styles.line}></View>
+
+              <Entypo
+                name="lock"
+                size={20}
+                color="black"
+                style={{ marginHorizontal: 5 }}
+              />
+
+              <TextInput
+                placeholder="Confirm password"
+                fontSize={16}
+                maxLength={8}
+                marginHorizontal={10}
+                returnKeyType="done"
+                autoCapitalize="none"
+                keyboardType="default"
+                secureTextEntry={true}
+                selectionColor="#EE3855" // Change this color
+                onChangeText={(confirm) => this.setState({ confirm })}
+              />
+            </View>
+
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 40,
+              }}
+            >
+              <TouchableOpacity
+                style={styles.signInBtn}
+                onPress={() =>
+                  navigation.navigate("OTP", { phoneData: this.state.phone })
+                }
               >
-                Proceed to Log in
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={{ fontWeight: "600", fontSize: 18, color: "#fff" }}
+                >
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 30,
+              }}
+            >
+              <TouchableOpacity
+                style={styles.toSignUp}
+                onPress={() => navigation.goBack()}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: "#000",
+                  }}
+                >
+                  Proceed to Log in
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </Animatable.View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     );
   }
 }

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-const MyBH = () => {
+const MyBH = ({ navigation }) => {
   const [foundBH, setfoundBH] = React.useState(true);
   return (
     <View style={styles.container}>
@@ -16,7 +16,7 @@ const MyBH = () => {
             You haven't rented any Boarding house
           </Text>
           <TouchableOpacity
-            onPress={() => nav.navigate("Home")}
+            onPress={() => navigation.navigate("Boardinghouses")}
             style={{
               height: 50,
               width: "60%",

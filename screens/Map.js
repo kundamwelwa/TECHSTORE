@@ -28,7 +28,7 @@ import { GOOGLE_API_KEY } from "../ENVIRONMENTS";
 import AddressPicker from "../components/AddressPicker";
 import MapViewDirections from "react-native-maps-directions";
 import RBSheet from "react-native-raw-bottom-sheet";
-
+import { Entypo } from "@expo/vector-icons";
 export default function Map({ navigation }) {
   const [location, setLocation] = useState(null);
   const [city, setCity] = React.useState("");
@@ -38,7 +38,7 @@ export default function Map({ navigation }) {
   const [mapReady, setMapReady] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [destination, setDestination] = useState(null);
-
+  const [distance, setDistance] = useState(null);
   const [institution, setInstitution] = useState("Zict college");
   const [bedspaces, setBedspaces] = useState(2);
   const [bhgender, setBhgender] = useState("Male");
@@ -253,13 +253,17 @@ export default function Map({ navigation }) {
               strokeColor="#124e78"
               optimizeWaypoints={true}
               onReady={(result) => {
+                // const { distance, duration } = result;
+
+                // console.log("Distance:" + distance * 1000);
+
                 // alert(address);
                 mapRef.current.fitToCoordinates(result.coordinates, {
                   edgePadding: {
-                    right: 30,
-                    bottom: 150,
-                    left: 30,
-                    top: 150,
+                    right: 60,
+                    bottom: 100,
+                    left: 60,
+                    top: 100,
                   },
                 });
               }}
@@ -267,6 +271,8 @@ export default function Map({ navigation }) {
           </>
         )}
       </MapView>
+
+      
       {/* <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}
@@ -275,15 +281,32 @@ export default function Map({ navigation }) {
       </TouchableOpacity> */}
 
       <View style={styles.searchContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back-sharp" size={24} color="black" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back-sharp" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ backgroundColor: "#EE3855", padding: 2, borderRadius: 3 }}
+            onPress={() => navigation.navigate("Boardinghouses")}
+          >
+            <Entypo name="list" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
         <View style={{ marginBottom: 10 }} />
         <AddressPicker
           placeholdeText="search by institution"
           fetchAddress={(latitude, longitude) => {
             setDestination({ latitude, longitude });
-            console.log(destination);
+
+            const newRegion = {
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.0222,
+              longitudeDelta: 0.0121,
+            };
+
+            mapRef.current.animateToRegion(newRegion, 1200);
+            console.log(newRegion);
           }}
         />
         <View

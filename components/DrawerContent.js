@@ -116,7 +116,7 @@ const DrawerContent = (props) => {
                   color={color}
                 />
               )}
-              label="Near me"
+              label="Find Boarding house"
               onPress={() => {
                 props.navigation.navigate("Boardinghouses");
               }}

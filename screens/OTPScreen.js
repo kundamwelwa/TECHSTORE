@@ -37,7 +37,6 @@ const OTPScreen = ({ navigation }) => {
   const compareOTP = (text) => {
     const enteredOTP = otp.join(""); // Convert the OTP array to a single string
     if (enteredOTP === text) {
-      alert("OTP Verified", "You have entered the correct OTP.");
       const prevScreen =
         navigation?.getState()?.routes?.[navigation.getState().index - 1]?.name;
       console.log("Previous Screen:", prevScreen);

@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react-native";
 
 import { SelectList, DropDownSelect } from "react-native-dropdown-select-list";
-
+import { Entypo, Feather } from "@expo/vector-icons";
 import NumericInput from "react-native-numeric-input";
 import BHCard from "../components/BHCard";
 import RadioForm, {
@@ -347,18 +347,21 @@ const BHhoom = ({ navigation }) => {
                   marginStart: 0,
                   width: "60%",
                 }),
+                flexDirection: "row",
               }}
               //   onPress={(prev) => setViewLoading(true); goToDetailsScreen }
               onPress={goToResultsScreen}
             >
+              <Feather name="map" size={20} color="white" />
               <Text
                 style={{
                   color: "#fff",
                   fontSize: 16,
+                  marginStart: 10,
                   ...(isTablet() && { fontSize: 22, fontWeight: "400" }),
                 }}
               >
-                Locate Boarding House
+                Locate By Map
               </Text>
             </TouchableOpacity>
           </View>

@@ -27,6 +27,7 @@ const AddressPicker = ({ placeholdeText, label, fetchAddress }) => {
         onPress={onPressAddress}
         fetchDetails={true}
         enablePoweredByContainer={false}
+        debounce={300}
         query={{
           key: GOOGLE_API_KEY,
           language: "en",

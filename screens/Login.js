@@ -13,6 +13,9 @@ import {
 import React, { useState, useEffect, Component } from "react";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
+import { ActivityIndicator } from "react-native-paper";
+import * as SMS from "expo-sms";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export class Login extends Component {
   constructor(props) {
@@ -20,8 +23,85 @@ export class Login extends Component {
     this.state = {
       phone: "",
       password: "",
+      activityLoader: false,
+      incorrectCredentials: false,
+      isLoading: false, // Track login loading state
+      userData: null, // Store user data upon successful login
+      otp: "",
+      enteredOtp: "",
+      isFirstLaunch: false,
     };
   }
+  LogDataInDB = async () => {
+    var phone = this.state.phone;
+    var password = this.state.password;
+
+    if (phone.length == 0 || password.length == 0) {
+      alert("Required Field Is Missing!");
+    } else {
+      var formdata = new FormData();
+      formdata.append("phone", phone);
+      formdata.append("password", password);
+
+      var headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+
+      var requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      fetch("https://www.pezabond.com/pezabondfiles/login.php", requestOptions)
+        .then((Response) => Response.json())
+        .then((Response) => {
+          if (Response[0].Message == "log in successfully!") {
+            this.setState((prevState) => ({
+              activityLoader: true, // Toggle the state
+              incorrectCredentials: false,
+            }));
+            setTimeout(() => {
+              this.setState((prevState) => ({
+                activityLoader: false, // Toggle the state
+              }));
+
+              this.props.navigation.replace("Home", {
+                phoneData: phone,
+              });
+            }, 3000);
+          } else if (Response[0].Message == "log in Failed!") {
+            this.setState((prevState) => ({
+              activityLoader: false, // Toggle the state
+              incorrectCredentials: true,
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error("ERROR:" + error);
+        })
+        .finally(() =>
+          this.setState({
+            phone: "",
+            password: "",
+          })
+        );
+    }
+  };
+
+  setActivityLoader = () => {
+    if (this.state.phone.trim() == "") {
+      alert("phone number field is empty");
+    } else if (this.state.password.trim() == "") {
+      alert("password field can't be empty");
+    } else {
+      this.setState((prevState) => ({
+        activityLoader: true, // Toggle the state
+      }));
+      this.LogDataInDB();
+    }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -48,6 +128,7 @@ export class Login extends Component {
         >
           Login
         </Animatable.Text>
+
         <Animatable.View
           animation="fadeInUp"
           duration={1500}
@@ -66,6 +147,7 @@ export class Login extends Component {
               placeholder="Enter your mobile number"
               fontSize={16}
               maxLength={9}
+              selectionColor="#EE3855" // Change this color
               marginHorizontal={10}
               returnKeyType="done"
               keyboardType="phone-pad"
@@ -96,12 +178,17 @@ export class Login extends Component {
               returnKeyType="done"
               autoCapitalize="none"
               keyboardType="default"
+              selectionColor="#EE3855" // Change this color
               secureTextEntry={true}
               width={100}
               onChangeText={(password) => this.setState({ password })}
             />
           </View>
-
+          {this.state.incorrectCredentials && (
+            <Text style={{ color: "red", justifyContent: "center" }}>
+              incorrect login credentials
+            </Text>
+          )}
           <View
             style={{
               alignItems: "center",
@@ -111,19 +198,30 @@ export class Login extends Component {
           >
             <TouchableOpacity
               style={styles.signInBtn}
-              onPress={() => {
-                if (this.state.phone.trim() == "") {
-                  alert("phone number field is empty");
-                } else if (this.state.password.trim() == "") {
-                  alert("password field can't be empty");
-                } else {
-                  navigation.navigate("OTP", { phoneData: this.state.phone });
-                }
-              }}
+              disabled={this.state.activityLoader}
+              onPress={
+                this.setActivityLoader
+                //   () => {
+                //   this.setActivityLoader;
+                //   if (this.state.phone.trim() == "") {
+                //     alert("phone number field is empty");
+                //   } else if (this.state.password.trim() == "") {
+                //     alert("password field can't be empty");
+                //   } else {
+                //     navigation.navigate("OTP", { phoneData: this.state.phone });
+                //   }
+                // }
+              }
             >
-              <Text style={{ fontWeight: "600", fontSize: 18, color: "#fff" }}>
-                Login
-              </Text>
+              {this.state.activityLoader ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text
+                  style={{ fontWeight: "600", fontSize: 18, color: "#fff" }}
+                >
+                  Login
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
           <View

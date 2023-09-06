@@ -16,7 +16,7 @@ import {
   FontAwesome,
   EvilIcons,
 } from "@expo/vector-icons";
-
+import { useNavigation } from "@react-navigation/native";
 const BHCard = (props) => {
   const { price, address, distance, rating } = props;
   const isTablet = () => {
@@ -25,9 +25,10 @@ const BHCard = (props) => {
     // Adjust the threshold value as per your requirement
     return aspectRatio <= 1.6;
   };
-
+  const navigation = useNavigation();
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => navigation.navigate("Details")}
       style={{
         height: 250,
         width: 180,
@@ -188,7 +189,7 @@ const BHCard = (props) => {
           }),
         }}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 
