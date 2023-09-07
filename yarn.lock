@@ -1642,7 +1642,7 @@
 
 "@react-native-async-storage/async-storage@1.17.11":
   version "1.17.11"
-  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.11.tgz#7ec329c1b9f610e344602e806b04d7c928a2341d"
+  resolved "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.17.11.tgz"
   integrity sha512-bzs45n5HNcDq6mxXnSsOHysZWn1SbbebNxldBXCQs8dSvF8Aor9KCdpm+TpnnGweK3R6diqsT8lFhX77VX0NFw==
   dependencies:
     merge-options "^3.0.4"
@@ -4214,6 +4214,11 @@ expo-font@~11.1.1:
   dependencies:
     fontfaceobserver "^2.1.0"
 
+expo-haptics@~12.2.1:
+  version "12.2.1"
+  resolved "https://registry.yarnpkg.com/expo-haptics/-/expo-haptics-12.2.1.tgz#9705c245663fcf317ca19adc2e8bbcb5270562e7"
+  integrity sha512-XRZtmIQi901Q4+/cZnVrULRFOqShsgCuSP0SCbVEhnq8sK0OA4jgun12O93Pu5aGvTyoqsAcIArE8tX+8AEqRA==
+
 expo-image-loader@~4.1.0:
   version "4.1.1"
   resolved "https://registry.npmjs.org/expo-image-loader/-/expo-image-loader-4.1.1.tgz"
@@ -4279,7 +4284,7 @@ expo-pwa@0.0.126:
 
 expo-sms@~11.2.1:
   version "11.2.1"
-  resolved "https://registry.yarnpkg.com/expo-sms/-/expo-sms-11.2.1.tgz#05719f30c6fc2bd827058c1219258fbbe6ecd991"
+  resolved "https://registry.npmjs.org/expo-sms/-/expo-sms-11.2.1.tgz"
   integrity sha512-ZvPSMsbDYlTK+35B4L/hl239xpKYasLo4+0D5cNSUUssv90x2dEOXeInqCPvvJHejNOYfj3ZDrRbf9LsdDVa5A==
 
 expo-status-bar@~1.4.4:
@@ -8219,6 +8224,11 @@ rimraf@~2.6.2:
   integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
   dependencies:
     glob "^7.1.3"
+
+rn-slide-button@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/rn-slide-button/-/rn-slide-button-1.0.3.tgz"
+  integrity sha512-quzZNfvNkJ3rTPCTiz5WOezkJoErP3bTiyofOFf4lrpNWPpL2Dt1mXPzxzUC8hYHNl6BQaYuF5VLGL5SIod5Cw==
 
 run-parallel@^1.1.9:
   version "1.2.0"

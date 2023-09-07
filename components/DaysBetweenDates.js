@@ -44,7 +44,10 @@ export default function DaysBetweenDates({ startDate, endDate }) {
     // Find the index of the current date in daysInRange
     const currentDateIndex = daysInRange.findIndex((day) => {
       const today = new Date();
-      return day.date.getDate() === today.getDate() && day.date.getMonth() === today.getMonth();
+      return (
+        day.date.getDate() === today.getDate() &&
+        day.date.getMonth() === today.getMonth()
+      );
     });
 
     // Calculate the xOffset to center the current date
@@ -53,15 +56,31 @@ export default function DaysBetweenDates({ startDate, endDate }) {
     // Scroll to the xOffset to center the current date
     scrollViewRef.current.scrollTo({ x: xOffset, animated: true });
   }, []);
-  
 
   return (
     <View style={styles.container}>
       <View
-        style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 10,
+        }}
       >
-        <Feather name="calendar" size={24} color="black" />
-        <Text style={styles.title}>Rental Calender</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Feather name="calendar" size={24} color="black" />
+          <Text style={styles.title}>Rental Calender</Text>
+        </View>
+
+        <View>
+          <Text style={{ fontWeight: "700" }}>Checked in date</Text>
+          <Text>{startDate}</Text>
+        </View>
       </View>
 
       <View
@@ -75,7 +94,7 @@ export default function DaysBetweenDates({ startDate, endDate }) {
       </View>
 
       <ScrollView
-       ref={scrollViewRef}
+        ref={scrollViewRef}
         horizontal={true}
         contentContainerStyle={styles.monthsContainer}
       >

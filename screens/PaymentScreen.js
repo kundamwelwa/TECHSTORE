@@ -13,7 +13,7 @@ import * as Animatable from "react-native-animatable";
 import PaymentSuccessAnimation from "./../components/PaymentSuccessAnimation";
 import TextInputWithLeadingText from "../components/TextInputWithLeadingText";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-
+import NumericInput from "react-native-numeric-input";
 const PaymentScreen = ({ navigation, onAnimationComplete }) => {
   const [expanded, setExpanded] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
@@ -21,7 +21,10 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
   const animationRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
   const [AcceptTC, setAcceptTC] = useState(false);
-
+  const [months, setMonths] = React.useState(1);
+  const [checkout, setcheckout] = React.useState(650);
+  const [total, setTotal] = React.useState(checkout);
+  var amount = 650;
   const changeTC = (value) => {
     setAcceptTC(value);
   };
@@ -79,7 +82,7 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
             textAlign: "center",
           }}
         >
-          Payment Options
+          Checkout
         </Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
@@ -154,6 +157,65 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
                 Apply
               </Text>
             </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={{ marginStart: 15, marginTop: 20 }}>
+          <Text style={{ color: "#000", fontWeight: "500" }}>
+            How many months are you paying for?
+          </Text>
+          <View
+            style={{
+              marginVertical: 15,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <NumericInput
+              value={months}
+              onChange={(value) => {
+                setMonths(value);
+                if (value >= 3) {
+                  console.log("max reached");
+                }
+              }}
+              maxValue={3}
+              minValue={1}
+              totalWidth={120}
+              totalHeight={40}
+              rounded
+              step={1}
+              valueType="integer"
+              iconStyle={{
+                color: "#EE3855",
+              }}
+            />
+            <View style={styles.sideBorder}></View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginEnd: 30,
+                padding: 5,
+                paddingHorizontal: 10,
+                borderRadius: 6,
+                backgroundColor: "#EE3855",
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: "500",
+                  color: "#fff",
+                  fontSize: 20,
+                  marginEnd: 10,
+                }}
+              >
+                ZMW
+              </Text>
+              <Text style={{ fontWeight: "500", color: "#fff", fontSize: 20 }}>
+                {checkout * months}
+              </Text>
+            </View>
           </View>
         </View>
         <List.Section title="Payment Options">
@@ -306,4 +368,11 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
 
 export default PaymentScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  sideBorder: {
+    height: "100%",
+    width: 1,
+    backgroundColor: "#ee3855",
+    marginRight: 10,
+  },
+});

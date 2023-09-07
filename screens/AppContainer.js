@@ -9,7 +9,6 @@ import React from "react";
 
 const Stack = createStackNavigator();
 const AppContainer = () => {
-  
   return (
     <Stack.Navigator>
       {/* <Stack.Screen

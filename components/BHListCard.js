@@ -15,7 +15,7 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const BHListCard = ({ props }) => {
+const BHListCard = (props) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -64,7 +64,7 @@ const BHListCard = ({ props }) => {
             marginBottom: 10,
           }}
         >
-          Angel Boarding Houses
+          {props.bhName}
         </Text>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <MaterialIcons name="house" size={18} color="#000" />
@@ -74,7 +74,7 @@ const BHListCard = ({ props }) => {
               marginStart: 3,
             }}
           >
-            {"22 kalewa"}
+            {props.address}
           </Text>
         </View>
         <View
@@ -87,7 +87,7 @@ const BHListCard = ({ props }) => {
               marginStart: 3,
             }}
           >
-            Male
+            {props.gender}
           </Text>
         </View>
         <View
@@ -100,7 +100,7 @@ const BHListCard = ({ props }) => {
               marginStart: 3,
             }}
           >
-            2
+            {props.bedspaces}
           </Text>
         </View>
 
@@ -128,7 +128,7 @@ const BHListCard = ({ props }) => {
                 color: "#EE3855",
               }}
             >
-              K {750}
+              K {props.price}
             </Text>
             <Text
               style={{

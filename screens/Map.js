@@ -29,6 +29,8 @@ import AddressPicker from "../components/AddressPicker";
 import MapViewDirections from "react-native-maps-directions";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { Entypo } from "@expo/vector-icons";
+import Counter from "../components/Counter";
+import BHListCard from "./../components/BHListCard";
 export default function Map({ navigation }) {
   const [location, setLocation] = useState(null);
   const [city, setCity] = React.useState("");
@@ -42,6 +44,7 @@ export default function Map({ navigation }) {
   const [institution, setInstitution] = useState("Zict college");
   const [bedspaces, setBedspaces] = useState(2);
   const [bhgender, setBhgender] = useState("Male");
+  const [count, setCount] = useState(0);
 
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
@@ -49,12 +52,18 @@ export default function Map({ navigation }) {
     // Adjust the threshold value as per your requirement
     return aspectRatio <= 1.6;
   };
-  const handleMarkerPress = (shop) => {
+  const handleMarkerPress = (bh) => {
     const mark = {
-      latitude: shop.Latitude,
-      longitude: shop.Longitude,
+      latitude: bh.Latitude,
+      longitude: bh.Longitude,
+      bhName: bh.bhName,
+      address: bh.address,
+      gender: bh.gender,
+      bedspaces: bh.bedspaces,
+      price: bh.price,
     };
     setSelectedMarker(mark);
+
     openBottomSheet();
   };
 
@@ -72,24 +81,44 @@ export default function Map({ navigation }) {
       ShopName: "BH 1",
       Latitude: 28.646451,
       Longitude: -12.947038,
+      bhName: "Angel Boarding house",
+      address: "22 Kalewa Road",
+      gender: "male",
+      bedspaces: 2,
+      price: 650,
     },
     {
       ShopID: 2,
       ShopName: "BH 2",
       Latitude: -12.94757,
       Longitude: 28.644077,
+      bhName: "MaroonGate Boarding house",
+      address: "20 Mwatianvwa Road",
+      gender: "male/female",
+      bedspaces: 6,
+      price: 750,
     },
     {
       ShopID: 3,
       ShopName: "BH 3",
       Latitude: -12.947038,
       Longitude: 28.646451,
+      bhName: "Angel Boarding house",
+      address: "22 Kalewa Road",
+      gender: "male",
+      bedspaces: 2,
+      price: 1050,
     },
     {
       ShopID: 4,
       ShopName: "BH 4",
       Latitude: -12.948248,
       Longitude: 28.644152,
+      bhName: "GreenGate Boarding house",
+      address: "21 Mwatianvwa Road",
+      gender: "male/female",
+      bedspaces: 2,
+      price: 750,
     },
 
     {
@@ -97,30 +126,55 @@ export default function Map({ navigation }) {
       ShopName: "BH 5",
       Latitude: -12.946442,
       Longitude: 28.639933,
+      bhName: "james Boarding house",
+      address: "22 Kalewa Road",
+      gender: "male",
+      bedspaces: 3,
+      price: 700,
     },
     {
       ShopID: 6,
       ShopName: "BH 6",
       Latitude: -12.946528,
       Longitude: 28.639947,
+      bhName: "Angel Boarding house",
+      address: "22 Kalewa Road",
+      gender: "male",
+      bedspaces: 1,
+      price: 650,
     },
     {
       ShopID: 7,
       ShopName: "BH 7",
       Latitude: -12.947089,
       Longitude: 28.639814,
+      bhName: "BlackGate Boarding house",
+      address: "24 Kalewa Road",
+      gender: "male",
+      bedspaces: 2,
+      price: 550,
     },
     {
       ShopID: 8,
       ShopName: "BH 8",
       Latitude: -12.949464,
       Longitude: 28.642954,
+      bhName: "Tafika Boarding house",
+      address: "23 Mwami Road",
+      gender: "male",
+      bedspaces: 2,
+      price: 850,
     },
     {
       ShopID: 9,
       ShopName: "BH 8",
       Latitude: -12.9576602,
       Longitude: 28.629381,
+      bhName: "Angel Boarding house",
+      address: "22 Kalewa Road",
+      gender: "male",
+      bedspaces: 4,
+      price: 650,
     },
 
     // Add more shops as needed
@@ -187,6 +241,7 @@ export default function Map({ navigation }) {
         /> */}
         <ActivityIndicator animating={true} color={"#EE3855"} size={"large"} />
         <Text style={{ marginTop: 15 }}>Locating Boarding houses</Text>
+        <Counter />
       </View>
     );
   }
@@ -208,16 +263,16 @@ export default function Map({ navigation }) {
           longitudeDelta: 0.0121,
         }}
       >
-        {fetchedAeromechanicsShops.map((shop) => (
+        {fetchedAeromechanicsShops.map((bh) => (
           <Marker
-            key={shop.ShopID}
+            key={bh.ShopID}
             coordinate={{
-              latitude: shop.Latitude,
-              longitude: shop.Longitude,
+              latitude: bh.Latitude,
+              longitude: bh.Longitude,
             }}
-            title={shop.ShopName}
+            title={bh.bhName}
             onPress={() => {
-              handleMarkerPress(shop);
+              handleMarkerPress(bh);
             }}
             image={require("../assets/icons/home4.png")}
           />
@@ -272,7 +327,6 @@ export default function Map({ navigation }) {
         )}
       </MapView>
 
-      
       {/* <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}
@@ -326,7 +380,7 @@ export default function Map({ navigation }) {
         </View>
         <RBSheet
           ref={bsRef}
-          height={Dimensions.get("window").height * 0.37}
+          height={Dimensions.get("window").height * 0.27}
           duration={500}
           closeOnDragDown={false}
           closeOnPressMask={true}
@@ -341,6 +395,9 @@ export default function Map({ navigation }) {
           }}
         >
           <TouchableOpacity
+            style={{
+              marginVertical: 7,
+            }}
             onPress={() => {
               bsRef.current.close();
               navigation.navigate("Results", {
@@ -361,153 +418,23 @@ export default function Map({ navigation }) {
             </Text>
           </TouchableOpacity>
 
-          <View
-            style={{
-              flexDirection: "row",
-              paddingVertical: 20,
-              width: "100%",
-            }}
-          >
-            <ImageBackground
-              source={require("../assets/images/bh3.png")}
-              resizeMethod="resize"
-              imageStyle={{ borderRadius: 10 }}
-              style={{
-                height: Dimensions.get("window").height * 0.17,
-                width: 150,
-                borderRadius: 10,
-                ...(isTablet() && {
-                  height: 180,
-                }),
-              }}
+          {selectedMarker && (
+            <BHListCard
+              bhName={selectedMarker.bhName}
+              address={selectedMarker.address}
+              gender={selectedMarker.gender}
+              bedspaces={selectedMarker.bedspaces}
+              price={selectedMarker.price}
             />
-
-            <View
-              style={{
-                paddingStart: 20,
-                width: "60%",
-                marginEnd: 20,
-                marginStart: 7,
-              }}
-            >
-              <Text style={{ fontWeight: "600", fontSize: 20 }}>
-                Northrise, Ndola
-              </Text>
-              <Text
-                style={{ fontWeight: "300", fontSize: 14, marginBottom: 5 }}
-              >
-                Kalewa 22
-              </Text>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginTop: 5,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="map-marker-distance"
-                  size={18}
-                  color="#000"
-                />
-                <Text
-                  style={{
-                    color: "#000",
-                    marginStart: 5,
-                    ...(isTablet() && {
-                      fontSize: 18,
-                    }),
-                  }}
-                >
-                  {" "}
-                  {23}m
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  marginTop: 5,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons name="shower" size={18} color="#000" />
-                <Text
-                  style={{
-                    color: "#000",
-                    marginStart: 5,
-                    textDecorationLine: "line-through",
-                    ...(isTablet() && {
-                      fontSize: 18,
-                    }),
-                  }}
-                >
-                  {" "}
-                  Self Contained
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  marginTop: 5,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons name="cash" size={18} color="#000" />
-                <View
-                  style={{
-                    flexDirection: "row",
-                    padding: 3,
-                    marginVertical: 5,
-                    alignItems: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: "bold",
-                      color: "#000",
-                      ...(isTablet() && {
-                        fontSize: 22,
-                      }),
-                    }}
-                  >
-                    K {750}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#000",
-                      ...(isTablet() && {
-                        fontSize: 16,
-                      }),
-                    }}
-                  >
-                    /month
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View
+          )}
+          {/* <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "center",
               alignItems: "center",
               marginHorizontal: 10,
             }}
           >
-            <TouchableOpacity
-              style={{ alignItems: "center", flexDirection: "row" }}
-              onPress={() => {
-                bsRef.current.close();
-                navigation.navigate("Details");
-              }}
-            >
-              <Ionicons name="eye" size={24} color="black" />
-              <Text style={{ marginStart: 5 }}>Details</Text>
-            </TouchableOpacity>
             <TouchableOpacity
               style={{
                 backgroundColor: "#EE3855",
@@ -537,7 +464,7 @@ export default function Map({ navigation }) {
                 Book Now
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </RBSheet>
       </View>
     </SafeAreaView>

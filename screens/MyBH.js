@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import DaysBetweenDates from "../components/DaysBetweenDates";
+import SlideButton from "rn-slide-button";
+import { FontAwesome5 } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 const MyBH = ({ navigation }) => {
+  const [visibleCheckIn, setCheckIn] = useState(true);
   const getCurrentMonthDays = () => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -113,11 +117,11 @@ const MyBH = ({ navigation }) => {
             }}
           >
             <View>
-              <Text style={{ fontSize: 12, fontWeight: "400" }}>
-                Date Rented: {"10th Dec, 2023 "}
+              <Text style={{ fontSize: 12, fontWeight: "500" }}>
+                Date Booked: {"10th Dec, 2023 "}
               </Text>
 
-              <Text style={{ fontSize: 14, fontWeight: "500" }}>
+              <Text style={{ fontSize: 12, fontWeight: "500" }}>
                 Room #: {12}{" "}
               </Text>
             </View>
@@ -138,7 +142,6 @@ const MyBH = ({ navigation }) => {
               <Text style={{ color: "#ee3855", fontSize: 16 }}> / month</Text>
             </View>
           </View>
-
           <View
             style={{
               justifyContent: "space-between",
@@ -228,7 +231,37 @@ const MyBH = ({ navigation }) => {
             </View>
           </View>
 
-          <DaysBetweenDates startDate="2023-08-29" endDate="2023-12-06" />
+          {!visibleCheckIn && (
+            <DaysBetweenDates startDate="2023-09-07" endDate="2023-10-07" />
+          )}
+          {visibleCheckIn && (
+            <SlideButton
+              title={<Text style={{ fontSize: 16 }}>Slide to Check in</Text>}
+              animation={true}
+              icon={
+                <FontAwesome5 name="arrow-right" size={24} color="#ee3855" />
+              }
+              containerStyle={{
+                backgroundColor: "#ee3855",
+                fontSize: 22,
+              }}
+              underlayStyle={{
+                backgroundColor: "#ee3855",
+              }}
+              thumbStyle={{
+                backgroundColor: "white",
+              }}
+              onSlideEnd={() =>
+                Haptics.notificationAsync(
+                  Haptics.NotificationFeedbackType.Success,
+                  setCheckIn(false)
+                )
+              }
+              onReachedToEnd={() => console.log("you are checked in")}
+              reverseSlideEnabled={false}
+              animationDuration={150}
+            />
+          )}
         </View>
       )}
     </View>
