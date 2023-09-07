@@ -13,17 +13,19 @@ import {
 import React, { useState, useEffect, Component } from "react";
 import { Ionicons, Entypo, FontAwesome } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
-
+import { Zocial } from "@expo/vector-icons";
 export class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
       navigation: this.props,
-      user: "",
+      firstname: "",
+      lastname: "",
       phone: "",
       password: "",
       confirm: "",
       referralCode: "",
+      email: "",
     };
   }
 
@@ -46,13 +48,6 @@ export class Signup extends Component {
     const { navigation } = this.props;
     return (
       <KeyboardAvoidingView style={styles.container}>
-        <Animatable.Image
-          animation="zoomIn"
-          duration={1500}
-          source={require("../assets/icons/pezabongofficial.png")}
-          resizeMode="contain"
-          style={{ width: "100%", height: 80, marginBottom: 20 }}
-        />
         <Animatable.Text
           animation="fadeInDown"
           duration={1500}
@@ -116,7 +111,7 @@ export class Signup extends Component {
               />
 
               <TextInput
-                placeholder="User name"
+                placeholder="First name"
                 fontSize={16}
                 marginHorizontal={10}
                 returnKeyType="done"
@@ -124,7 +119,63 @@ export class Signup extends Component {
                 keyboardType="default"
                 width={100}
                 selectionColor="#EE3855" // Change this color
-                onChangeText={(password) => this.setState({ password })}
+                onChangeText={(firstname) => this.setState({ firstname })}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+              }}
+            >
+              <View style={styles.line}></View>
+              <FontAwesome
+                name="user"
+                size={20}
+                color="black"
+                style={{ marginHorizontal: 5 }}
+              />
+
+              <TextInput
+                placeholder="Last name"
+                fontSize={16}
+                marginHorizontal={10}
+                returnKeyType="done"
+                autoCapitalize="none"
+                keyboardType="default"
+                width={100}
+                selectionColor="#EE3855" // Change this color
+                onChangeText={(lastname) => this.setState({ lastname })}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+              }}
+            >
+              <View style={styles.line}></View>
+              <Zocial
+                name="email"
+                size={20}
+                color="black"
+                style={{ marginHorizontal: 5 }}
+              />
+
+              <TextInput
+                placeholder="Email address"
+                fontSize={16}
+                marginHorizontal={10}
+                returnKeyType="done"
+                autoCapitalize="none"
+                keyboardType="default"
+                keyboardType="email-address"
+                autoCompleteType="email"
+                width={200}
+                selectionColor="#EE3855" // Change this color
+                onChangeText={(email) => this.setState({ email })}
               />
             </View>
 
@@ -244,6 +295,9 @@ export class Signup extends Component {
                   style={{
                     fontSize: 14,
                     color: "#000",
+                    fontWeight: "500",
+                    textDecorationLine: "underline",
+                    paddingBottom: 10,
                   }}
                 >
                   Proceed to Log in

@@ -29,7 +29,7 @@ export class Login extends Component {
       userData: null, // Store user data upon successful login
       otp: "",
       enteredOtp: "",
-      isFirstLaunch: false,
+      isLoggedIn: false,
     };
   }
   LogDataInDB = async () => {
@@ -66,7 +66,7 @@ export class Login extends Component {
               this.setState((prevState) => ({
                 activityLoader: false, // Toggle the state
               }));
-
+              this.setState({ isLoggedIn: true });
               this.props.navigation.replace("Home", {
                 phoneData: phone,
               });
@@ -239,6 +239,9 @@ export class Login extends Component {
                 style={{
                   fontSize: 14,
                   color: "#000",
+                  fontWeight: "500",
+                  textDecorationLine: "underline",
+                  paddingBottom: 10,
                 }}
               >
                 Dont have an account?
