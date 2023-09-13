@@ -26,8 +26,10 @@ import { GOOGLE_API_KEY } from "../ENVIRONMENTS";
 import axios from "axios";
 import NearbyColleges from "../components/NearbyColleges";
 import Advert from "../components/advert";
+import { useRoute } from "@react-navigation/native";
 
 const BHhoom = ({ navigation }) => {
+  const route = useRoute();
   const [selected, setSelected] = React.useState([]);
   const [bedspaces, setBedspaces] = React.useState(1);
   const [viewLoading, setViewLoading] = React.useState(false);
@@ -207,8 +209,7 @@ const BHhoom = ({ navigation }) => {
               source={require("../assets/icons/rent.png")}
             />
           </View>
-
-          <View style={{ marginHorizontal: 10, marginTop: -25 }}>
+          {/* <View style={{ marginHorizontal: 10, marginTop: -25 }}>
             <Text
               style={{
                 fontSize: 15,
@@ -324,7 +325,27 @@ const BHhoom = ({ navigation }) => {
                 />
               </View>
             </View>
-          </View>
+          </View> */}
+          {/* <View
+            style={{
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "400",
+                marginStart: 10,
+
+                marginBottom: 5,
+                ...(isTablet() && { fontSize: 22, fontWeight: "700" }),
+              }}
+            >
+              use the smart map Search
+            </Text>
+          </View> */}
           <View
             style={{
               width: "100%",
@@ -340,7 +361,7 @@ const BHhoom = ({ navigation }) => {
                 height: 50,
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: 20,
+                marginTop: 7,
                 marginBottom: 25,
                 ...(isTablet() && {
                   height: 60,
@@ -362,7 +383,7 @@ const BHhoom = ({ navigation }) => {
                   ...(isTablet() && { fontSize: 22, fontWeight: "400" }),
                 }}
               >
-                Locate By Map
+                Locate boarding using Map
               </Text>
             </TouchableOpacity>
           </View>

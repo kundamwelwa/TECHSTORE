@@ -7,14 +7,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Signup } from "./screens/Signup";
 import AppContainer from "./screens/AppContainer";
 import { NavigationContainer } from "@react-navigation/native";
+import { Provider } from "react-redux";
+import store from "./Redux/store";
 
 export default function App() {
   return (
-    <PaperProvider>
+    <Provider store={store}>
       <NavigationContainer>
         <AppContainer />
       </NavigationContainer>
-    </PaperProvider>
+    </Provider>
   );
 }
 

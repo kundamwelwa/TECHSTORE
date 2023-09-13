@@ -9,13 +9,19 @@ import React, { useEffect } from "react";
 import OnboardingScreen from "./OnboardingScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 const Stack = createStackNavigator();
 const AppContainer = () => {
   const [isFirstLaunch, setIsFirstLaunch] = React.useState(null);
   const [logged_in, setlogged_in] = React.useState(null);
+
+ 
+
   useEffect(() => {
+   
     AsyncStorage.getItem("alreadyLaunched").then((value) => {
       if (value == null) {
+        
         AsyncStorage.setItem("alreadyLaunched", "true");
         setIsFirstLaunch(true);
       } else {
@@ -29,6 +35,8 @@ const AppContainer = () => {
         setlogged_in(false);
       }
     });
+
+  
   }, []);
   if (isFirstLaunch == null) {
     return null;

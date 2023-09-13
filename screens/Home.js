@@ -9,7 +9,7 @@ import {
   Touchable,
 } from "react-native";
 import React, { Component } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 // external components
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -43,6 +43,7 @@ import Boardinghouses from "./Boardinghouses";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -130,15 +131,7 @@ export default class Home extends Component {
               ),
             }}
           />
-          <Drawer.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              drawerIcon: ({ color, size }) => (
-                <Ionicons name="person" color={color} size={20} />
-              ),
-            }}
-          />
+
           <Drawer.Screen
             name="Boardinghouses"
             component={Boardinghouses}

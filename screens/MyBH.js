@@ -7,10 +7,13 @@ import DaysBetweenDates from "../components/DaysBetweenDates";
 import SlideButton from "rn-slide-button";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { Icon } from "react-native-elements";
+
 const MyBH = ({ navigation }) => {
   const [visibleCheckIn, setCheckIn] = useState(true);
   const getCurrentMonthDays = () => {
     const currentDate = new Date();
+
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Get the number of days in the current month
@@ -23,8 +26,22 @@ const MyBH = ({ navigation }) => {
     return daysArray;
   };
 
-  const currentMonthDays = getCurrentMonthDays();
+  const getCurrentDate = () => {
+    const currentDate = new Date();
 
+    // Get the year, month, and day
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(currentDate.getDate()).padStart(2, "0");
+
+    // Combine them in the "yyyy-mm-dd" format
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  };
+
+  const currentMonthDays = getCurrentMonthDays();
+  const currentDate = getCurrentDate();
   const [foundBH, setfoundBH] = React.useState(true);
   return (
     <View style={styles.container}>
@@ -232,35 +249,66 @@ const MyBH = ({ navigation }) => {
           </View>
 
           {!visibleCheckIn && (
-            <DaysBetweenDates startDate="2023-09-07" endDate="2023-10-07" />
+            <>
+              <DaysBetweenDates startDate={currentDate} endDate="2023-10-07" />
+              <View style={styles.warningContainer}>
+                <Icon
+                  name="warning"
+                  type="material"
+                  color="#FF5722"
+                  size={24}
+                />
+                <Text style={styles.warningText}>Rent is now counting!</Text>
+              </View>
+
+              <Text style={{ marginVertical: 5, color: "darkgray" }}>
+                We will remind you 3 days before your rent is due
+              </Text>
+            </>
           )}
           {visibleCheckIn && (
-            <SlideButton
-              title={<Text style={{ fontSize: 16 }}>Slide to Check in</Text>}
-              animation={true}
-              icon={
-                <FontAwesome5 name="arrow-right" size={24} color="#ee3855" />
-              }
-              containerStyle={{
-                backgroundColor: "#ee3855",
-                fontSize: 22,
-              }}
-              underlayStyle={{
-                backgroundColor: "#ee3855",
-              }}
-              thumbStyle={{
-                backgroundColor: "white",
-              }}
-              onSlideEnd={() =>
-                Haptics.notificationAsync(
-                  Haptics.NotificationFeedbackType.Success,
-                  setCheckIn(false)
-                )
-              }
-              onReachedToEnd={() => console.log("you are checked in")}
-              reverseSlideEnabled={false}
-              animationDuration={150}
-            />
+            <View>
+              <SlideButton
+                title={<Text style={{ fontSize: 16 }}>Slide to Check in</Text>}
+                animation={true}
+                icon={
+                  <FontAwesome5 name="arrow-right" size={24} color="#ee3855" />
+                }
+                containerStyle={{
+                  backgroundColor: "#ee3855",
+                  fontSize: 22,
+                }}
+                underlayStyle={{
+                  backgroundColor: "#ee3855",
+                }}
+                thumbStyle={{
+                  backgroundColor: "white",
+                }}
+                onSlideEnd={() =>
+                  Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Success,
+                    setCheckIn(false)
+                  )
+                }
+                onReachedToEnd={() => console.log("you are checked in")}
+                reverseSlideEnabled={false}
+                animationDuration={150}
+              />
+
+              <View style={styles.warningContainer}>
+                <Icon
+                  name="exclamation-circle"
+                  type="font-awesome"
+                  color="#FF5722"
+                  size={24}
+                />
+                <Text style={styles.warningText}>
+                  once you check in your rent will start counting immediatly and
+                  the boarding house owner will receive the rental amount you
+                  paid!
+                </Text>
+              </View>
+            </View>
           )}
         </View>
       )}
@@ -293,5 +341,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#ee3855",
     marginRight: 10,
     marginVertical: 10,
+  },
+  warningContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 16,
+  },
+  warningText: {
+    marginHorizontal: 8,
+    color: "#FF5722",
+    textAlign: "justify",
   },
 });

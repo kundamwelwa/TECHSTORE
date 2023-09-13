@@ -18,9 +18,11 @@ import { Ionicons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 const DrawerContent = (props) => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const customer = useSelector((state) => state.customer);
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
@@ -68,8 +70,9 @@ const DrawerContent = (props) => {
                 size={50}
               />
               <View style={{ flexDirection: "column", marginLeft: 15 }}>
-                <Title style={styles.title}>Geoffrey zimba</Title>
-                <Caption style={styles.caption}>+260 777 603 060</Caption>
+                <Title style={styles.title}>{customer[0].name}</Title>
+                <Caption style={styles.caption}>260{"-"}{customer[0].phone_number}
+                </Caption>
               </View>
             </View>
           </View>

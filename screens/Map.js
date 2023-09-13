@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  FlatList,
 } from "react-native";
 import {
   Ionicons,
@@ -31,6 +32,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { Entypo } from "@expo/vector-icons";
 import Counter from "../components/Counter";
 import BHListCard from "./../components/BHListCard";
+import axios from "axios";
 export default function Map({ navigation }) {
   const [location, setLocation] = useState(null);
   const [city, setCity] = React.useState("");
@@ -45,6 +47,9 @@ export default function Map({ navigation }) {
   const [bedspaces, setBedspaces] = useState(2);
   const [bhgender, setBhgender] = useState("Male");
   const [count, setCount] = useState(0);
+  const [boardingHouses, setBoardingHouses] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [address, setAddress] = React.useState("");
 
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
@@ -52,19 +57,43 @@ export default function Map({ navigation }) {
     // Adjust the threshold value as per your requirement
     return aspectRatio <= 1.6;
   };
+
   const handleMarkerPress = (bh) => {
     const mark = {
-      latitude: bh.Latitude,
-      longitude: bh.Longitude,
+      id: bh.id,
+      latitude: parseFloat(bh.Latitude),
+      longitude: parseFloat(bh.Longitude),
       bhName: bh.bhName,
-      address: bh.address,
+      street: bh.street,
       gender: bh.gender,
       bedspaces: bh.bedspaces,
       price: bh.price,
     };
     setSelectedMarker(mark);
-
+    fetchRooms(bh.id);
     openBottomSheet();
+    setAddress(bh.street);
+  };
+
+  const fetchRooms = async (id) => {
+    var formdata = new FormData();
+    formdata.append("bhID", id);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://www.pezabond.com/pezabondfiles/fetchRooms.php",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        setRooms(result);
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const openBottomSheet = () => {
@@ -74,116 +103,21 @@ export default function Map({ navigation }) {
     console.log("Selected Place Details:", details);
   };
 
-  const fetchedAeromechanicsShops = [
-    // Replace with your actual fetched data
-    {
-      ShopID: 1,
-      ShopName: "BH 1",
-      Latitude: 28.646451,
-      Longitude: -12.947038,
-      bhName: "Angel Boarding house",
-      address: "22 Kalewa Road",
-      gender: "male",
-      bedspaces: 2,
-      price: 650,
-    },
-    {
-      ShopID: 2,
-      ShopName: "BH 2",
-      Latitude: -12.94757,
-      Longitude: 28.644077,
-      bhName: "MaroonGate Boarding house",
-      address: "20 Mwatianvwa Road",
-      gender: "male/female",
-      bedspaces: 6,
-      price: 750,
-    },
-    {
-      ShopID: 3,
-      ShopName: "BH 3",
-      Latitude: -12.947038,
-      Longitude: 28.646451,
-      bhName: "Angel Boarding house",
-      address: "22 Kalewa Road",
-      gender: "male",
-      bedspaces: 2,
-      price: 1050,
-    },
-    {
-      ShopID: 4,
-      ShopName: "BH 4",
-      Latitude: -12.948248,
-      Longitude: 28.644152,
-      bhName: "GreenGate Boarding house",
-      address: "21 Mwatianvwa Road",
-      gender: "male/female",
-      bedspaces: 2,
-      price: 750,
-    },
-
-    {
-      ShopID: 5,
-      ShopName: "BH 5",
-      Latitude: -12.946442,
-      Longitude: 28.639933,
-      bhName: "james Boarding house",
-      address: "22 Kalewa Road",
-      gender: "male",
-      bedspaces: 3,
-      price: 700,
-    },
-    {
-      ShopID: 6,
-      ShopName: "BH 6",
-      Latitude: -12.946528,
-      Longitude: 28.639947,
-      bhName: "Angel Boarding house",
-      address: "22 Kalewa Road",
-      gender: "male",
-      bedspaces: 1,
-      price: 650,
-    },
-    {
-      ShopID: 7,
-      ShopName: "BH 7",
-      Latitude: -12.947089,
-      Longitude: 28.639814,
-      bhName: "BlackGate Boarding house",
-      address: "24 Kalewa Road",
-      gender: "male",
-      bedspaces: 2,
-      price: 550,
-    },
-    {
-      ShopID: 8,
-      ShopName: "BH 8",
-      Latitude: -12.949464,
-      Longitude: 28.642954,
-      bhName: "Tafika Boarding house",
-      address: "23 Mwami Road",
-      gender: "male",
-      bedspaces: 2,
-      price: 850,
-    },
-    {
-      ShopID: 9,
-      ShopName: "BH 8",
-      Latitude: -12.9576602,
-      Longitude: 28.629381,
-      bhName: "Angel Boarding house",
-      address: "22 Kalewa Road",
-      gender: "male",
-      bedspaces: 4,
-      price: 650,
-    },
-
-    // Add more shops as needed
-  ];
   const handleMapReady = () => {
     setMapReady(true);
   };
 
   useEffect(() => {
+    // Fetch data from the API
+    axios
+      .get("https://www.pezabond.com/pezabondfiles/fetchboardinghouses.php")
+      .then((response) => {
+        setBoardingHouses(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
     // Request permission to access the device's location
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -263,14 +197,14 @@ export default function Map({ navigation }) {
           longitudeDelta: 0.0121,
         }}
       >
-        {fetchedAeromechanicsShops.map((bh) => (
+        {boardingHouses.map((bh) => (
           <Marker
-            key={bh.ShopID}
+            key={bh.id}
             coordinate={{
-              latitude: bh.Latitude,
-              longitude: bh.Longitude,
+              latitude: parseFloat(bh.Latitude),
+              longitude: parseFloat(bh.Longitude),
             }}
-            title={bh.bhName}
+            title={bh.name}
             onPress={() => {
               handleMarkerPress(bh);
             }}
@@ -350,6 +284,7 @@ export default function Map({ navigation }) {
         <AddressPicker
           placeholdeText="search by institution"
           fetchAddress={(latitude, longitude) => {
+            setSelectedMarker(null);
             setDestination({ latitude, longitude });
 
             const newRegion = {
@@ -380,23 +315,21 @@ export default function Map({ navigation }) {
         </View>
         <RBSheet
           ref={bsRef}
-          height={Dimensions.get("window").height * 0.27}
+          height={Dimensions.get("window").height * 0.35}
           duration={500}
           closeOnDragDown={false}
           closeOnPressMask={true}
           customStyles={{
             container: {
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              borderTopColor: "rgb(120, 120, 120)",
-              borderTopWidth: 4,
               padding: 10,
+              backgroundColor: "rgba(0, 0, 0,0.0)",
             },
           }}
         >
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               marginVertical: 7,
+              marginBottom: 20,
             }}
             onPress={() => {
               bsRef.current.close();
@@ -416,55 +349,27 @@ export default function Map({ navigation }) {
             >
               View (10) related results
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {selectedMarker && (
-            <BHListCard
-              bhName={selectedMarker.bhName}
-              address={selectedMarker.address}
-              gender={selectedMarker.gender}
-              bedspaces={selectedMarker.bedspaces}
-              price={selectedMarker.price}
+            <FlatList
+              horizontal
+              data={rooms}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <View key={item.id}>
+                  <BHCard
+                    amount_per_month={item.amount_per_month}
+                    bed_spaces={item.bed_spaces}
+                    address={address}
+                    self_contained={item.self_contained}
+                    booked={item.booked}
+                    rating={item.rating}
+                  />
+                </View>
+              )}
             />
           )}
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginHorizontal: 10,
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#EE3855",
-                borderRadius: 20,
-                elevation: 5,
-                width: "60%",
-                height: 60,
-                alignItems: "center",
-                justifyContent: "center",
-                ...(isTablet() && {
-                  width: 200,
-                  height: 80,
-                }),
-              }}
-              onPress={() => console.log("clicked")}
-            >
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontWeight: "500",
-                  color: "#fff",
-                  ...(isTablet() && {
-                    fontSize: 24,
-                  }),
-                }}
-              >
-                Book Now
-              </Text>
-            </TouchableOpacity>
-          </View> */}
         </RBSheet>
       </View>
     </SafeAreaView>

@@ -16,6 +16,9 @@ import * as Animatable from "react-native-animatable";
 import { ActivityIndicator } from "react-native-paper";
 import * as SMS from "expo-sms";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { setCustomer } from "../Redux/customerSlice";
+import { connect } from "react-redux";
 
 export class Login extends Component {
   constructor(props) {
@@ -30,8 +33,17 @@ export class Login extends Component {
       otp: "",
       enteredOtp: "",
       isLoggedIn: false,
+      customer: [],
     };
   }
+
+  // Inside your class component
+  setCustomerData = (customerData) => {
+    const { dispatch } = this.props;
+    // Dispatch the action to set 'customer' data in Redux
+    dispatch(setCustomer(customerData));
+  };
+
   LogDataInDB = async () => {
     var phone = this.state.phone;
     var password = this.state.password;
@@ -56,26 +68,28 @@ export class Login extends Component {
 
       fetch("https://www.pezabond.com/pezabondfiles/login.php", requestOptions)
         .then((Response) => Response.json())
-        .then((Response) => {
-          if (Response[0].Message == "log in successfully!") {
+        .then((result) => {
+          if (result == "log in Failed!") {
+            this.setState({ customer: [] });
+            this.setState((prevState) => ({
+              activityLoader: false, // Toggle the state
+              incorrectCredentials: true,
+            }));
+          } else {
             this.setState((prevState) => ({
               activityLoader: true, // Toggle the state
               incorrectCredentials: false,
             }));
+            this.setState({ customer: result });
+            console.log(this.state.customer);
             setTimeout(() => {
               this.setState((prevState) => ({
                 activityLoader: false, // Toggle the state
               }));
               this.setState({ isLoggedIn: true });
-              this.props.navigation.replace("Home", {
-                phoneData: phone,
-              });
+              this.setCustomerData(result);
+              this.props.navigation.replace("Home");
             }, 3000);
-          } else if (Response[0].Message == "log in Failed!") {
-            this.setState((prevState) => ({
-              activityLoader: false, // Toggle the state
-              incorrectCredentials: true,
-            }));
           }
         })
         .catch((error) => {
@@ -284,4 +298,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default connect()(Login);

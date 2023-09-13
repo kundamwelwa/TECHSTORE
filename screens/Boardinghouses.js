@@ -26,6 +26,7 @@ import BHListCard from "../components/BHListCard";
 import * as Animatable from "react-native-animatable";
 
 const Boardinghouses = ({ navigation }) => {
+
   const refRBSheet = useRef();
   const [bedspaces, setBedspaces] = React.useState(1);
   const [gender, setGender] = React.useState(0);

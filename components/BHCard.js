@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
@@ -15,10 +15,14 @@ import {
   MaterialIcons,
   FontAwesome,
   EvilIcons,
+  Entypo,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 const BHCard = (props) => {
   const { price, address, distance, rating } = props;
+
+  // const [isBooked, setIsBooked] = React.useState(false);
+  const isBooked = props.booked === "1" ? true : false;
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
     const aspectRatio = height / width;
@@ -28,6 +32,7 @@ const BHCard = (props) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
+      disabled={isBooked}
       onPress={() => navigation.navigate("Details")}
       style={{
         height: 250,
@@ -63,11 +68,38 @@ const BHCard = (props) => {
             height: 180,
           }),
         }}
-      />
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 3,
+            alignItems: "center",
+            marginStart: 3,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="moon-full"
+            size={8}
+            color={isBooked ? "red" : "green"}
+          />
+          <Text
+            style={{
+              color: "#fff",
+              fontWeight: "500",
+              ...(isTablet() && {
+                fontSize: 18,
+              }),
+            }}
+          >
+            {" "}
+            {isBooked ? "Booked" : "Available"}
+          </Text>
+        </View>
+      </ImageBackground>
       <View
         style={{
           flexDirection: "row",
-          marginVertical: 5,
+          marginTop: 5,
           alignItems: "center",
           justifyContent: "space-between",
           marginEnd: 10,
@@ -91,7 +123,7 @@ const BHCard = (props) => {
               }),
             }}
           >
-            K {price}
+            K {props.amount_per_month}
           </Text>
           <Text
             style={{
@@ -124,55 +156,67 @@ const BHCard = (props) => {
               }),
             }}
           >
-            {rating}{" "}
+            {props.rating}{" "}
           </Text>
         </View>
       </View>
       <View style={{ flexDirection: "row", padding: 3, alignItems: "center" }}>
         <MaterialCommunityIcons name="shower" size={18} color="#000" />
+        {props.self_contained == 1 ? (
+          <Text
+            style={{
+              color: "#000",
+              textDecorationLine: "none",
+              ...(isTablet() && {
+                fontSize: 14,
+              }),
+            }}
+          >
+            {"  "}
+            Self Contained
+          </Text>
+        ) : (
+          <Text
+            style={{
+              color: "#000",
+              textDecorationLine: "line-through",
+              ...(isTablet() && {
+                fontSize: 14,
+              }),
+            }}
+          >
+            {"  "}
+            Self Contained
+          </Text>
+        )}
+      </View>
+      <View style={{ flexDirection: "row", padding: 3, alignItems: "center" }}>
+        <Entypo name="address" size={18} color="black" />
         <Text
           style={{
             color: "#000",
-            textDecorationLine: "line-through",
             ...(isTablet() && {
               fontSize: 18,
             }),
           }}
         >
-          {" "}
-          Self Contained
+          {"  "}
+          {props.address}
         </Text>
       </View>
       <View style={{ flexDirection: "row", padding: 3, alignItems: "center" }}>
-        <MaterialIcons name="house" size={18} color="#000" />
+        <FontAwesome name="bed" size={18} color="black" />
         <Text
           style={{
             color: "#000",
+            fontWeight: "400",
             ...(isTablet() && {
               fontSize: 18,
             }),
           }}
         >
-          {" "}
-          {address}
-        </Text>
-      </View>
-      <View style={{ flexDirection: "row", padding: 3, alignItems: "center" }}>
-        <MaterialCommunityIcons
-          name="map-marker-distance"
-          size={18}
-          color="#000"
-        />
-        <Text
-          style={{
-            color: "#000",
-            ...(isTablet() && {
-              fontSize: 18,
-            }),
-          }}
-        >
-          {" "}
-          {distance}m
+          {"  "}
+          {props.bed_spaces}
         </Text>
       </View>
 
