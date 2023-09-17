@@ -6,6 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icons/app_icon.png",
+    "platforms": ["ios", "android"],
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -14,22 +15,20 @@
       "width": 30,
       "height": 30
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.jayzimba40.pezabond"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.png",
+        "foregroundImage": "./assets/icons/app_icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.jayzimba40.pezabond"
     },
     "web": {
-      "favicon": "./assets/images/logo.png"
+      "favicon": "./assets/icons/app_icon.png"
     },
     "extra": {
       "eas": {

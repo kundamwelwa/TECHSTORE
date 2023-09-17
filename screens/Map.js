@@ -33,8 +33,12 @@ import { Entypo } from "@expo/vector-icons";
 import Counter from "../components/Counter";
 import BHListCard from "./../components/BHListCard";
 import axios from "axios";
+import { useRoute } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 export default function Map({ navigation }) {
-  const [location, setLocation] = useState(null);
+  const route = useRoute();
+  const { location } = route.params;
+
   const [city, setCity] = React.useState("");
   const [street, setStreet] = useState(""); // State to store the street name
   const mapRef = useRef();
@@ -117,31 +121,6 @@ export default function Map({ navigation }) {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-
-    // Request permission to access the device's location
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        // Handle the case when permission is not granted
-        return;
-      }
-
-      // Get the current location
-      let location = await Location.getCurrentPositionAsync({});
-
-      setLocation(location.coords);
-
-      // Reverse geocoding to get the city
-      let address = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-
-      if (address.length > 0) {
-        setCity(address[0].city);
-        setStreet(address[0].street); // Set the street name
-      }
-    })();
   }, []);
 
   // Handle button press event
@@ -160,19 +139,6 @@ export default function Map({ navigation }) {
           backgroundColor: "#fff",
         }}
       >
-        {/* <AnimatedLottieView
-          source={require("../assets/animations/loadingmap1.json")}
-          autoPlay
-          loop
-          style={{
-            position: "relative",
-            width: "80%",
-            justifyContent: "space-evenly",
-            alignContent: "center",
-            marginBottom: -15,
-            marginTop: -10,
-          }}
-        /> */}
         <ActivityIndicator animating={true} color={"#EE3855"} size={"large"} />
         <Text style={{ marginTop: 15 }}>Locating Boarding houses</Text>
         <Counter />
@@ -186,6 +152,8 @@ export default function Map({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="dark-content" />
+
       <MapView
         ref={mapRef}
         provider="google"

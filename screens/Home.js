@@ -88,7 +88,7 @@ export default class Home extends Component {
   render() {
     return (
       <NavigationContainer independent={true} style={styles.container}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar style="dark-content" />
         <Drawer.Navigator
           drawerContent={(props) => <DrawerContent {...props} />}
           screenOptions={{

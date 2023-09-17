@@ -13,6 +13,7 @@ import store from "./Redux/store";
 export default function App() {
   return (
     <Provider store={store}>
+      <StatusBar style="dark-content" />
       <PaperProvider>
         <NavigationContainer>
           <AppContainer />

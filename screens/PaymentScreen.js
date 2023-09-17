@@ -231,11 +231,9 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
             )}
             titleStyle={{
               color: "black",
+              backgroundColor: "#fff",
             }}
-            style={{
-              backgroundColo: "rgba(23, 0, 0, .32)",
-            }}
-            rippleColor="rgba(0, 0, 0, .32)"
+            rippleColor="rgba(0, 0, 0, 0.1)"
           >
             <List.Item
               title="MTN MoMo"

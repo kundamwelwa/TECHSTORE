@@ -154,6 +154,7 @@ const Details = ({ navigation }) => {
 
   return (
     <View style={styles.modalStyle}>
+      <StatusBar style="dark-content" />
       <ImageBackground
         source={selectedImageUrl}
         imageStyle={{

@@ -76,9 +76,9 @@ const MyBH = ({ navigation }) => {
         setfoundBH(true);
         console.log(myBH);
         setLoading(false);
-        var ch = parseInt(myBH[0].checked_in);
-        setCheckIn(!ch);
-        console.log(visibleCheckIn);
+        // var ch = parseInt(myBH[0].checked_in);
+        // setCheckIn(!ch);
+        // console.log(visibleCheckIn);
       })
       .catch((error) => {
         console.log("error", error);
@@ -91,29 +91,29 @@ const MyBH = ({ navigation }) => {
     // }
   }, []);
 
-  const upDateCheckedIn = async () => {
-    var formdata = new FormData();
-    formdata.append("customer_id", customer_id);
-    console.log("called");
+  // const upDateCheckedIn = async () => {
+  //   var formdata = new FormData();
+  //   formdata.append("customer_id", customer_id);
+  //   console.log("called");
 
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
+  //   var requestOptions = {
+  //     method: "POST",
+  //     body: formdata,
+  //     redirect: "follow",
+  //   };
 
-    fetch(
-      "https://www.pezabond.com/pezabondfiles/updateBooking.php",
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
+  //   fetch(
+  //     "https://www.pezabond.com/pezabondfiles/updateBooking.php",
+  //     requestOptions
+  //   )
+  //     .then((response) => response.text())
+  //     .then((result) => {
+  //       console.log(result);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error", error);
+  //     });
+  // };
 
   return (
     <View style={styles.container}>

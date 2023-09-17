@@ -28,6 +28,7 @@ import NearbyColleges from "../components/NearbyColleges";
 import Advert from "../components/advert";
 import { useRoute } from "@react-navigation/native";
 import { FlatList } from "react-native-gesture-handler";
+import { StatusBar } from "expo-status-bar";
 
 const BHhoom = ({ navigation }) => {
   const route = useRoute();
@@ -51,13 +52,14 @@ const BHhoom = ({ navigation }) => {
     setViewLoading(true);
     // console.log(institution, " ", bedspaces, " ", bhgender);
     setTimeout(() => {
-      navigation.navigate("Map");
+      navigation.navigate("Map", { location: location });
       // navigation.navigate("Results", { institution, bedspaces, bhgender });
       setViewLoading(false);
     }, 3000); // wait for 3 seconds (300 milliseconds) before navigating
   };
 
   const [city, setCity] = useState("Loading...");
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     const fetchLocationAndCity = async () => {
@@ -70,6 +72,7 @@ const BHhoom = ({ navigation }) => {
 
       try {
         const location = await Location.getCurrentPositionAsync({});
+        setLocation(location.coords);
         const coords = location.coords;
         const cityName = await getCityName(coords);
         setCity(cityName);
@@ -129,6 +132,7 @@ const BHhoom = ({ navigation }) => {
   };
   return (
     <>
+      <StatusBar style="dark-content" />
       <Advert />
       <ScrollView
         showsVerticalScrollIndicator={false}
