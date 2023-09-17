@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { ActivityIndicator } from "react-native-paper";
 import { color } from "react-native-reanimated";
+import { StatusBar } from "expo-status-bar";
 
 const MyBH = ({ navigation }) => {
   const [visibleCheckIn, setCheckIn] = useState(true);
@@ -117,6 +118,7 @@ const MyBH = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark-content" />
       {loading ? (
         <View style={styles.container2}>
           <ActivityIndicator size="large" color="#ee3855" />

@@ -23,8 +23,9 @@ import LiveMap from "./LiveMap";
 import Profile from "./Profile";
 import Notifications from "./Notifications";
 import MyBH from "./MyBH";
-import ListBH from './ListBH';
+import ListBH from "./ListBH";
 import PaymentScreen from "./PaymentScreen";
+import { StatusBar } from "expo-status-bar";
 
 // Create a stack navigator
 const Stack = createStackNavigator();
@@ -32,6 +33,8 @@ const Stack = createStackNavigator();
 const Room = () => {
   return (
     <Stack.Navigator>
+      <StatusBar style="dark-content" />
+
       <Stack.Screen
         name="Home"
         component={BHhoom}
@@ -72,12 +75,12 @@ const Room = () => {
         component={MyBH}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="ListBH"
         component={ListBH}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="PaymentScreen"
         component={PaymentScreen}
         options={{ headerShown: false }}

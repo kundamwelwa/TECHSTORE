@@ -30,6 +30,7 @@ import BHListCard from "../components/BHListCard";
 import * as Animatable from "react-native-animatable";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import the icon library you're using
+import { StatusBar } from "expo-status-bar";
 
 const Boardinghouses = ({ navigation }) => {
   // dummy data
@@ -111,6 +112,8 @@ const Boardinghouses = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
+      <StatusBar style="dark-content" />
+
       <Animatable.View
         animation={"fadeInLeft"}
         duration={800}

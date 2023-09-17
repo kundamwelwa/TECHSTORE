@@ -8,16 +8,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import NotificationComponent from "../components/NotificationComponent";
 import { MaterialIcons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 const TextViewWithLimit = ({ text, wordLimit }) => {
   // Split the text into words
-  const words = text.split(' ');
+  const words = text.split(" ");
 
   // Slice the words array to get the limited number of words
   const limitedWords = words.slice(0, wordLimit);
 
   // Join the limited words back into a single string
-  const limitedText = limitedWords.join(' ');
+  const limitedText = limitedWords.join(" ");
 
   return (
     <View>
@@ -61,6 +62,8 @@ const Notifications = ({ navigation, onAnimationComplete }) => {
   const nav = useNavigation();
   return (
     <View style={styles.container}>
+      <StatusBar style="dark-content" />
+
       {!foundNotifications ? (
         <>
           <Ionicons

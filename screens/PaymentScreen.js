@@ -15,6 +15,7 @@ import TextInputWithLeadingText from "../components/TextInputWithLeadingText";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import NumericInput from "react-native-numeric-input";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 const PaymentScreen = ({ navigation, onAnimationComplete }) => {
   const route = useRoute();
@@ -63,6 +64,8 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
   const handlePress = () => setExpanded(!expanded);
   return (
     <View style={{ padding: 5, backgroundColor: "#fff", flex: 1 }}>
+      <StatusBar style="dark-content" />
+
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
