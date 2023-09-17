@@ -32,8 +32,14 @@ const BHCard = (props) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      disabled={isBooked}
-      onPress={() => navigation.navigate("Details")}
+      disabled={isBooked} 
+      onPress={() => {
+        console.log(props.id);
+        navigation.navigate("Details", {
+          roomID: props.id,
+          address: props.address,
+        });
+      }}
       style={{
         height: 250,
         width: 180,

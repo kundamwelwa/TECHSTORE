@@ -14,7 +14,12 @@ import PaymentSuccessAnimation from "./../components/PaymentSuccessAnimation";
 import TextInputWithLeadingText from "../components/TextInputWithLeadingText";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import NumericInput from "react-native-numeric-input";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 const PaymentScreen = ({ navigation, onAnimationComplete }) => {
+  const route = useRoute();
+  const { price } = route.params;
+
   const [expanded, setExpanded] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
   const [animationVisible, setAnimationVisible] = useState(false);
@@ -22,9 +27,9 @@ const PaymentScreen = ({ navigation, onAnimationComplete }) => {
   const [inputValue, setInputValue] = useState("");
   const [AcceptTC, setAcceptTC] = useState(false);
   const [months, setMonths] = React.useState(1);
-  const [checkout, setcheckout] = React.useState(650);
+  const [checkout, setcheckout] = React.useState(price);
   const [total, setTotal] = React.useState(checkout);
-  var amount = 650;
+
   const changeTC = (value) => {
     setAcceptTC(value);
   };

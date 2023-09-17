@@ -13,9 +13,11 @@ import store from "./Redux/store";
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <AppContainer />
-      </NavigationContainer>
+      <PaperProvider>
+        <NavigationContainer>
+          <AppContainer />
+        </NavigationContainer>
+      </PaperProvider>
     </Provider>
   );
 }

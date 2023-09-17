@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
@@ -8,9 +8,14 @@ import SlideButton from "rn-slide-button";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { Icon } from "react-native-elements";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { ActivityIndicator } from "react-native-paper";
+import { color } from "react-native-reanimated";
 
 const MyBH = ({ navigation }) => {
   const [visibleCheckIn, setCheckIn] = useState(true);
+
   const getCurrentMonthDays = () => {
     const currentDate = new Date();
 
@@ -42,36 +47,81 @@ const MyBH = ({ navigation }) => {
 
   const currentMonthDays = getCurrentMonthDays();
   const currentDate = getCurrentDate();
-  const [foundBH, setfoundBH] = React.useState(true);
+  const [foundBH, setfoundBH] = React.useState(null);
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [myBH, setMyBH] = useState([]);
+  const customer = useSelector((state) => state.customer);
+  const customer_id = customer[0].customer_id;
+
+  useEffect(() => {
+    // Function to fetch booking details
+
+    var formdata = new FormData();
+    formdata.append("customer_id", customer_id);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://www.pezabond.com/pezabondfiles/fetchMyBH.php",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        setMyBH(result);
+        setfoundBH(true);
+        console.log(myBH);
+        setLoading(false);
+        var ch = parseInt(myBH[0].checked_in);
+        setCheckIn(!ch);
+        console.log(visibleCheckIn);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setfoundBH(false);
+        setLoading(false);
+      });
+
+    // if (visibleCheckIn == false) {
+    //   upDateCheckedIn();
+    // }
+  }, []);
+
+  const upDateCheckedIn = async () => {
+    var formdata = new FormData();
+    formdata.append("customer_id", customer_id);
+    console.log("called");
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://www.pezabond.com/pezabondfiles/updateBooking.php",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   return (
     <View style={styles.container}>
-      {!foundBH ? (
+      {loading ? (
         <View style={styles.container2}>
-          <Image
-            source={require("../assets/icons/house_cancel.png")}
-            style={{ width: 100, height: 100, marginVertical: 10 }}
-          />
-          <Text style={styles.noNotificatioin}>
-            You haven't rented any Boarding house
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Boardinghouses")}
-            style={{
-              height: 50,
-              width: "60%",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#EE3855",
-              borderRadius: 7,
-              marginVertical: 30,
-            }}
-          >
-            <Text style={{ color: "#fff", fontSize: 18, fontWeight: "500" }}>
-              Rent Now
-            </Text>
-          </TouchableOpacity>
+          <ActivityIndicator size="large" color="#ee3855" />
         </View>
-      ) : (
+      ) : foundBH ? (
         <View>
           <Text style={styles.nameOfBH}>Angel boarding houses</Text>
           <View
@@ -135,11 +185,17 @@ const MyBH = ({ navigation }) => {
           >
             <View>
               <Text style={{ fontSize: 12, fontWeight: "500" }}>
-                Date Booked: {"10th Dec, 2023 "}
+                Date Booked: {myBH[0].booked_date}
+              </Text>
+              <Text style={{ fontSize: 12, fontWeight: "500" }}>
+                Payment:{" "}
+                <Text style={{ fontSize: 12, fontWeight: "400" }}>
+                  {myBH[0].method}{" "}
+                </Text>
               </Text>
 
               <Text style={{ fontSize: 12, fontWeight: "500" }}>
-                Room #: {12}{" "}
+                Room #: {myBH[0].room_tag}{" "}
               </Text>
             </View>
 
@@ -154,12 +210,14 @@ const MyBH = ({ navigation }) => {
               <Text
                 style={{ fontSize: 30, fontWeight: "bold", color: "#ee3855" }}
               >
-                K {650}
+                K{" "}
+                {parseFloat(myBH[0].amount_per_month) *
+                  parseInt(myBH[0].months)}
               </Text>
               <Text style={{ color: "#ee3855", fontSize: 16 }}> / month</Text>
             </View>
           </View>
-          <View
+          {/* <View
             style={{
               justifyContent: "space-between",
               marginEnd: 10,
@@ -246,7 +304,7 @@ const MyBH = ({ navigation }) => {
                 lockers
               </Text>
             </View>
-          </View>
+          </View> */}
 
           {!visibleCheckIn && (
             <>
@@ -258,15 +316,23 @@ const MyBH = ({ navigation }) => {
                   color="#FF5722"
                   size={24}
                 />
-                <Text style={styles.warningText}>Rent is now counting!</Text>
+                <View>
+                  <Text style={styles.warningText}>Your rent is pending!</Text>
+                  <Text
+                    style={
+                      (styles.warningText,
+                      { marginStart: 10, color: "darkgray" })
+                    }
+                  >
+                    We will remind you 3 days before your rent is due
+                  </Text>
+                </View>
               </View>
 
-              <Text style={{ marginVertical: 5, color: "darkgray" }}>
-                We will remind you 3 days before your rent is due
-              </Text>
+              <View></View>
             </>
           )}
-          {visibleCheckIn && (
+          {visibleCheckIn == 1 && (
             <View>
               <SlideButton
                 title={<Text style={{ fontSize: 16 }}>Slide to Check in</Text>}
@@ -303,13 +369,39 @@ const MyBH = ({ navigation }) => {
                   size={24}
                 />
                 <Text style={styles.warningText}>
-                  once you check in your rent will start counting immediatly and
+                  once you check-in, your rent will start pending immediatly and
                   the boarding house owner will receive the rental amount you
                   paid!
                 </Text>
               </View>
             </View>
           )}
+        </View>
+      ) : (
+        <View style={styles.container2}>
+          <Image
+            source={require("../assets/icons/house_cancel.png")}
+            style={{ width: 100, height: 100, marginVertical: 10 }}
+          />
+          <Text style={styles.noNotificatioin}>
+            You haven't booked any Boarding house
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Boardinghouses")}
+            style={{
+              height: 50,
+              width: "60%",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#EE3855",
+              borderRadius: 7,
+              marginVertical: 30,
+            }}
+          >
+            <Text style={{ color: "#fff", fontSize: 18, fontWeight: "500" }}>
+              Book Now
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -348,8 +440,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   warningText: {
-    marginHorizontal: 8,
     color: "#FF5722",
     textAlign: "justify",
+    marginStart: 10,
   },
 });

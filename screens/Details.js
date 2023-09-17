@@ -9,7 +9,7 @@ import {
   Modal,
   Linking,
 } from "react-native";
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import {
   Entypo,
   Ionicons,
@@ -22,9 +22,14 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 // third party components
 // view more component
 import ViewMoreText from "react-native-view-more-text";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 const Details = ({ navigation }) => {
+  const route = useRoute();
+  const { roomID, address } = route.params;
   const [ViewModal, setViewModal] = React.useState(true);
+  const [roomDetails, setRoomDetails] = React.useState([]);
 
   const isTablet = () => {
     const { width, height } = Dimensions.get("window");
@@ -33,13 +38,12 @@ const Details = ({ navigation }) => {
     return aspectRatio <= 1.6;
   };
   let LandLordContact = "";
-  const makeCall = () => {
-    if (Platform.OS == "android") {
-      LandLordContact = "tel:${+260963676321}";
+  const makeCall = (contact) => {
+    if (Platform.OS === "android") {
+      LandLordContact = `tel:${contact}`;
     } else {
-      LandLordContact = "telprompt:${+260963676321}";
+      LandLordContact = `telprompt:${contact}`;
     }
-
     Linking.openURL(LandLordContact);
   };
 
@@ -81,6 +85,27 @@ const Details = ({ navigation }) => {
   const handleHousePress = (item) => {
     setSelectedImageUrl(item.imageUrl);
   };
+
+  useEffect(() => {
+    var formdata = new FormData();
+    formdata.append("roomID", roomID);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    // Fetch data from the API
+    fetch(
+      "https://www.pezabond.com/pezabondfiles/fetchRoomData.php",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        setRoomDetails(result[0]);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
 
   const renderViewMore = (onPress) => {
     return (
@@ -299,7 +324,7 @@ const Details = ({ navigation }) => {
                   }),
                 }}
               >
-                24 Kalewa Road
+                {address}
               </Text>
             </View>
           </View>
@@ -319,7 +344,7 @@ const Details = ({ navigation }) => {
                 height: 50,
               }),
             }}
-            onPress={() => makeCall()}
+            onPress={() => makeCall(roomDetails.contact)}
           >
             <FontAwesome
               name="phone"
@@ -345,13 +370,7 @@ const Details = ({ navigation }) => {
               }),
             }}
           >
-            Velit Lorem aute magna enim anim incididunt. Quis ad anim aute
-            exercitation et minim fugiat minim consectetur consequat qui
-            exercitation. Et minim occaecat ullamco veniam irure et adipisicing
-            ex sit est ad pariatur. Magna elit ullamco ullamco aute enim velit
-            quis. Consequat esse culpa in non adipisicing ullamco adipisicing
-            ea. Veniam incididunt esse mollit veniam aliqua tempor
-            reprehenderit.
+            {roomDetails.description}
           </Text>
         </ViewMoreText>
 
@@ -398,7 +417,7 @@ const Details = ({ navigation }) => {
                   }),
                 }}
               >
-                {2}
+                {roomDetails.bed_spaces}
               </Text>
             </View>
 
@@ -431,7 +450,7 @@ const Details = ({ navigation }) => {
                   }),
                 }}
               >
-                {1}
+                {roomDetails.tables}
               </Text>
             </View>
 
@@ -464,7 +483,7 @@ const Details = ({ navigation }) => {
                   }),
                 }}
               >
-                2
+                {roomDetails.lockers}
               </Text>
             </View>
 
@@ -500,7 +519,7 @@ const Details = ({ navigation }) => {
             }}
           >
             <Text style={{ fontSize: 30, fontWeight: "bold", color: "#000" }}>
-              K {650}
+              K {roomDetails.amount_per_month}
             </Text>
             <Text style={{ color: "#000", fontSize: 16 }}> / month</Text>
           </View>
@@ -519,7 +538,11 @@ const Details = ({ navigation }) => {
                 height: 80,
               }),
             }}
-            onPress={() => navigation.navigate("PaymentScreen")}
+            onPress={() =>
+              navigation.navigate("PaymentScreen", {
+                price: roomDetails.amount_per_month,
+              })
+            }
           >
             <Text
               style={{

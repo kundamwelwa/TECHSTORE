@@ -27,6 +27,7 @@ import axios from "axios";
 import NearbyColleges from "../components/NearbyColleges";
 import Advert from "../components/advert";
 import { useRoute } from "@react-navigation/native";
+import { FlatList } from "react-native-gesture-handler";
 
 const BHhoom = ({ navigation }) => {
   const route = useRoute();
@@ -35,54 +36,7 @@ const BHhoom = ({ navigation }) => {
   const [viewLoading, setViewLoading] = React.useState(false);
   const [gender, setGender] = React.useState(0);
   const [bhgender, setbhGender] = React.useState("Male");
-
-  const [location, setLocation] = useState(null);
-  const [collegesData, setCollegesData] = useState([]);
-  const bh_gender = [
-    { label: "Male", value: 0 },
-    { label: "Female", value: 1 },
-  ];
-
-  const institutions = [
-    { key: "1", value: "Zambia University College of Technology" },
-    { key: "2", value: "Northen Technical College" },
-    { key: "3", value: "Copperbelt University" },
-    { key: "4", value: "Northrise University" },
-    { key: "5", value: "Ndola Teaching Hospital" },
-    { key: "6", value: "Chreso University" },
-    { key: "7", value: "University Of Lusaka" },
-    { key: "8", value: "ZICAS" },
-    { key: "9", value: "ICU" },
-    { key: "10", value: "University Of Zambia" },
-    { key: "11", value: "Mulungushi University" },
-  ];
-  const beds = [
-    { key: "1", value: "1" },
-    { key: "2", value: "2" },
-    { key: "3", value: "3" },
-    { key: "4", value: "4" },
-    { key: "5", value: "5" },
-    { key: "6", value: "6" },
-  ];
-
-  const house = [
-    {
-      data: { latitude: -12.969825, longitude: 28.6510915 },
-      key: "ChIJXxwI9d-0bBkREAD7-7EJKis",
-      value: "Northrise University",
-    },
-    {
-      data: { latitude: -12.9541186, longitude: 28.6487254 },
-      key: "ChIJvYMQehW1bBkRmYBtnEsvRq0",
-      value: "Arthur David College of Paediatric and Child Health Nursing",
-    },
-    {
-      data: { latitude: -12.9448429, longitude: 28.655469 },
-      key: "ChIJlcEShNq1bBkRC0Nvz8jiETo",
-      value: "Lusaka",
-    },
-  ];
-
+  const [rooms, setRooms] = useState([]);
   const handleItemSelect = (item) => {
     console.log(item.data);
   };
@@ -103,55 +57,76 @@ const BHhoom = ({ navigation }) => {
     }, 3000); // wait for 3 seconds (300 milliseconds) before navigating
   };
 
-  // Function to get device's current location and fetch colleges
-  const fetchCollegesNearby = async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+  const [city, setCity] = useState("Loading...");
+
+  useEffect(() => {
+    const fetchLocationAndCity = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
       if (status !== "granted") {
-        console.log("Permission to access location was denied.");
+        console.error("Location permission not granted");
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      const apiKey = GOOGLE_API_KEY;
-      const radius = 50000; // Search within a 5 km radius (you can adjust this as needed)
-      const country = "Zambia";
-      const types = "university"; // You can use other types like 'college', 'school', etc.
+      try {
+        const location = await Location.getCurrentPositionAsync({});
+        const coords = location.coords;
+        const cityName = await getCityName(coords);
+        setCity(cityName);
+        fetchRooms(cityName);
+      } catch (error) {
+        console.error("Error fetching location:", error);
+      }
+    };
 
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&radius=${radius}&type=${types}&key=${apiKey}`
+    fetchLocationAndCity();
+  }, []);
+
+  const getCityName = async (coords) => {
+    const { latitude, longitude } = coords;
+    const apiKey = GOOGLE_API_KEY;
+    const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      const addressComponents = data.results[0].address_components;
+      const cityComponent = addressComponents.find((component) =>
+        component.types.includes("locality")
       );
-      // Extracting relevant data (ID and name) from the API response and storing in an array
+      const cityName = cityComponent
+        ? cityComponent.long_name
+        : "City not found";
 
-      const colleges = response.data.results.map((college) => ({
-        key: college.place_id,
-        value: college.name,
-        data: {
-          latitude: college.geometry.location.lat,
-          longitude: college.geometry.location.lng,
-        },
-      }));
-      // console.log(colleges);
-      setCollegesData(colleges);
+      return cityName;
     } catch (error) {
-      console.log("Error fetching colleges: ", error);
+      console.error("Error fetching city:", error);
+      return "Error fetching city";
     }
   };
 
-  useEffect(() => {
-    fetchCollegesNearby();
-  }, []);
+  const fetchRooms = async (cityName) => {
+    var formdata = new FormData();
+    formdata.append("city", cityName);
 
-  const handleSelect = (item) => {
-    // Extract latitude and longitude from the selected item
-    // const { latitude, longitude, label } = item;
-    // console.log(`Selected Institution: ${label}`);
-    // console.log(`Latitude: ${latitude}`);
-    // console.log(`Longitude: ${longitude}`);
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
 
-    console.log(item);
+    fetch(
+      "https://www.pezabond.com/pezabondfiles/fetchNear.php",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        setRooms(result);
+        console.log(rooms);
+      })
+      .catch((error) => console.log("error", error));
+    setRooms([]);
   };
-
   return (
     <>
       <Advert />
@@ -383,7 +358,7 @@ const BHhoom = ({ navigation }) => {
                   ...(isTablet() && { fontSize: 22, fontWeight: "400" }),
                 }}
               >
-                Locate boarding using Map
+                Locate boarding house using Map
               </Text>
             </TouchableOpacity>
           </View>
@@ -458,57 +433,40 @@ const BHhoom = ({ navigation }) => {
           }}
         ></View>
 
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
-          bounce
-          style={{
-            backgroundColor: "#fff",
-            paddingVertical: 10,
-            marginBottom: 20,
-          }}
-          horizontal
-        >
-          <TouchableOpacity onPress={() => navigation.navigate("Details")}>
-            <BHCard
-              price={750}
-              rating={5}
-              address={"22 Arthur davison"}
-              distance={100}
+        {rooms.length == 0 ? (
+          <View style={styles.container2}>
+            <Lottie
+              source={require("../assets/animations/clouds.json")}
+              autoPlay
+              loop
+              speed={2}
+              style={{ width: "100%", height: "90%" }}
             />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Details")}>
-            <BHCard
-              price={750}
-              rating={5}
-              address={"22 Arthur davison"}
-              distance={100}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Details")}>
-            <BHCard
-              price={750}
-              rating={5}
-              address={"22 Arthur davison"}
-              distance={100}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Details")}>
-            <BHCard
-              price={750}
-              rating={5}
-              address={"22 Arthur davison"}
-              distance={100}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Details")}>
-            <BHCard
-              price={750}
-              rating={5}
-              address={"22 Arthur davison"}
-              distance={100}
-            />
-          </TouchableOpacity>
-        </ScrollView>
+            <Text style={{ fontWeight: "500", fontSize: 14, marginTop: -20 }}>
+              We couldn't find boarding houses in your current city
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            horizontal
+            data={rooms}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View key={item.id}>
+                <BHCard
+                  id={item.id}
+                  amount_per_month={item.amount_per_month}
+                  bed_spaces={item.bed_spaces}
+                  address={item.street}
+                  self_contained={item.self_contained}
+                  booked={item.booked}
+                  rating={item.rating}
+                  contact={item.contact}
+                />
+              </View>
+            )}
+          />
+        )}
       </ScrollView>
     </>
   );
@@ -516,4 +474,16 @@ const BHhoom = ({ navigation }) => {
 
 export default BHhoom;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  Near: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    marginBottom: 20,
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

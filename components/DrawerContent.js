@@ -29,9 +29,10 @@ const DrawerContent = (props) => {
   const handleShare = async () => {
     try {
       const shareOptions = {
+        title: "DOWNLOAD THE PEZABOND BOARDING HOUSE FINDER APP TODAY!!!",
         message:
-          "I have downloaded the PEZABOND app and booked a boarding house through the app. Download the app from the link provided and check out their promotion! Download it here: https://www.yourappdownloadlink.com",
-        url: "https://www.wedeveloperszm.com", // Replace with your app's actual download link
+          "Make your boarding house searching easy and stress free by downloading the pezabond boarding house finder app!. Use the link provided and check out their promotion! \n\nDownload it here: https://www.pezabond.com",
+        url: "https://www.pezabond.com", // Replace with your app's actual download link
       };
       const result = await Share.share(shareOptions);
 
@@ -67,12 +68,15 @@ const DrawerContent = (props) => {
                 source={{
                   uri: "https://yt3.ggpht.com/a/AATXAJy8V1MJElSp2uunJFtE-ZkCDdFJbBPWXOtB3g=s900-c-k-c0xffffffff-no-rj-mo",
                 }}
-                size={50}
+                size={70}
               />
               <View style={{ flexDirection: "column", marginLeft: 15 }}>
                 <Title style={styles.title}>{customer[0].name}</Title>
-                <Caption style={styles.caption}>260{"-"}{customer[0].phone_number}
+                <Caption style={styles.caption}>
+                  260{"-"}
+                  {customer[0].phone_number}
                 </Caption>
+                <Caption style={styles.caption2}>{customer[0].email}</Caption>
               </View>
             </View>
           </View>
@@ -87,7 +91,7 @@ const DrawerContent = (props) => {
                 props.navigation.navigate("Home");
               }}
             />
-            <DrawerItem
+            {/* <DrawerItem
               icon={(color, size) => (
                 <View style={styles.drawerItem}>
                   <SimpleLineIcons name="bell" color={color} size={22} />
@@ -100,7 +104,7 @@ const DrawerContent = (props) => {
               onPress={() => {
                 props.navigation.navigate("Notifications");
               }}
-            ></DrawerItem>
+            ></DrawerItem> */}
 
             <DrawerItem
               icon={(color, size) => (
@@ -182,7 +186,12 @@ const styles = StyleSheet.create({
     color: "white",
   },
   caption: {
-    fontSize: 14,
+    fontSize: 12,
+    lineHeight: 14,
+    color: "white",
+  },
+  caption2: {
+    fontSize: 12,
     lineHeight: 14,
     color: "white",
   },

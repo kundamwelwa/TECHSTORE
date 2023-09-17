@@ -19,7 +19,12 @@ const BHListCard = (props) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Details")}
+      onPress={() =>
+        navigation.navigate("Details", {
+          roomID: props.id,
+          address: props.street,
+        })
+      }
       style={{
         height: 150,
         width: "98%",
@@ -64,7 +69,7 @@ const BHListCard = (props) => {
             marginBottom: 10,
           }}
         >
-          {props.bhName}
+          {props.name}
         </Text>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <MaterialIcons name="house" size={18} color="#000" />
@@ -74,7 +79,7 @@ const BHListCard = (props) => {
               marginStart: 3,
             }}
           >
-            {props.address}
+            {props.street}
           </Text>
         </View>
         <View
@@ -87,7 +92,7 @@ const BHListCard = (props) => {
               marginStart: 3,
             }}
           >
-            {props.gender}
+            {props.sex}
           </Text>
         </View>
         <View
@@ -100,7 +105,7 @@ const BHListCard = (props) => {
               marginStart: 3,
             }}
           >
-            {props.bedspaces}
+            {props.bed_spaces}
           </Text>
         </View>
 
@@ -155,7 +160,7 @@ const BHListCard = (props) => {
                 marginStart: 4,
               }}
             >
-              {4}{" "}
+              {props.rating}{" "}
             </Text>
           </View>
         </View>

@@ -359,6 +359,7 @@ export default function Map({ navigation }) {
               renderItem={({ item }) => (
                 <View key={item.id}>
                   <BHCard
+                    id={item.id}
                     amount_per_month={item.amount_per_month}
                     bed_spaces={item.bed_spaces}
                     address={address}
